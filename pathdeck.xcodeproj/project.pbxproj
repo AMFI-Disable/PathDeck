@@ -1,0 +1,210 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6A413ABBBA2D4A4C859FFCFB /* pathdeckapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334DA509F9714B5EA6C81201 /* pathdeckapp.swift */; };		9456D69062D64174AEB2282F /* models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CDF44BD383475C92CEB93A /* models.swift */; };		CCAD4B19FA6E463AB1A4BC1F /* shellconfigparser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E5629DCB8B40FB8C023FC6 /* shellconfigparser.swift */; };		5DFB44BC3FCA4C818DD2ADE6 /* dashboardview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D5E58D0B344B1A43E7355 /* dashboardview.swift */; };		C0AC9D0601904D509275D44C /* backupview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AF7386A1D4984965506CC /* backupview.swift */; };		C228FAC8C73341178BDC17A9 /* aliasstudioview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074868B5783C47E9A5CCF452 /* aliasstudioview.swift */; };		021556E328B14F68BDDB204D /* sidebarview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB70C9678B492A8E641475 /* sidebarview.swift */; };		86FFBF2B48414826A9484E2D /* helpview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4C0458F8684498AEC0E0A1 /* helpview.swift */; };		12BB0CA78EDC47E18F5E7FC6 /* pathstackview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6988B7C6C855401F9394F39A /* pathstackview.swift */; };		517418A4EE5F44AAAC325C22 /* mainview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF093D439D9D45219FEB6F21 /* mainview.swift */; };		96FADB4041BA41929D305156 /* visualeffectview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266F22E20BF9426A8786772F /* visualeffectview.swift */; };		FF4EE20931EF4325BCA97F4F /* envvarview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82520495A5884CAB90DC0DF9 /* envvarview.swift */; };		A47D19FCBC8D47AB92406DF2 /* touchidservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BCDDA0AD049A5A83C759F /* touchidservice.swift */; };		B993C2F67AC24178A1D12A14 /* backupmanager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C74286867C486EB7D12C63 /* backupmanager.swift */; };		E1C16D206B434EB984397E88 /* updaterservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F273C3B7AC934489A3952AA5 /* updaterservice.swift */; };		A304D515D19D4EB9B2FE9E32 /* shellconfigservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3694615A09AD4715A4770ACE /* shellconfigservice.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		334DA509F9714B5EA6C81201 /* pathdeckapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/pathdeckapp.swift"; sourceTree = "<group>"; };		F2CDF44BD383475C92CEB93A /* models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/models/models.swift"; sourceTree = "<group>"; };		D7E5629DCB8B40FB8C023FC6 /* shellconfigparser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/parser/shellconfigparser.swift"; sourceTree = "<group>"; };		CD5D5E58D0B344B1A43E7355 /* dashboardview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/dashboardview.swift"; sourceTree = "<group>"; };		0B3AF7386A1D4984965506CC /* backupview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/backupview.swift"; sourceTree = "<group>"; };		074868B5783C47E9A5CCF452 /* aliasstudioview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/aliasstudioview.swift"; sourceTree = "<group>"; };		A9BB70C9678B492A8E641475 /* sidebarview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/sidebarview.swift"; sourceTree = "<group>"; };		CD4C0458F8684498AEC0E0A1 /* helpview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/helpview.swift"; sourceTree = "<group>"; };		6988B7C6C855401F9394F39A /* pathstackview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/pathstackview.swift"; sourceTree = "<group>"; };		FF093D439D9D45219FEB6F21 /* mainview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/mainview.swift"; sourceTree = "<group>"; };		266F22E20BF9426A8786772F /* visualeffectview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/visualeffectview.swift"; sourceTree = "<group>"; };		82520495A5884CAB90DC0DF9 /* envvarview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/views/envvarview.swift"; sourceTree = "<group>"; };		D80BCDDA0AD049A5A83C759F /* touchidservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/services/touchidservice.swift"; sourceTree = "<group>"; };		E4C74286867C486EB7D12C63 /* backupmanager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/services/backupmanager.swift"; sourceTree = "<group>"; };		F273C3B7AC934489A3952AA5 /* updaterservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/services/updaterservice.swift"; sourceTree = "<group>"; };		3694615A09AD4715A4770ACE /* shellconfigservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "sources/pathdeck/services/shellconfigservice.swift"; sourceTree = "<group>"; };		9505974106904790BF0DF22E /* package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "package.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		78D89D3D3C624F1483D394F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EF032A8F0F9C4727A7292853 = {
+			isa = PBXGroup;
+			children = (
+				334DA509F9714B5EA6C81201 /* pathdeckapp.swift */,				F2CDF44BD383475C92CEB93A /* models.swift */,				D7E5629DCB8B40FB8C023FC6 /* shellconfigparser.swift */,				CD5D5E58D0B344B1A43E7355 /* dashboardview.swift */,				0B3AF7386A1D4984965506CC /* backupview.swift */,				074868B5783C47E9A5CCF452 /* aliasstudioview.swift */,				A9BB70C9678B492A8E641475 /* sidebarview.swift */,				CD4C0458F8684498AEC0E0A1 /* helpview.swift */,				6988B7C6C855401F9394F39A /* pathstackview.swift */,				FF093D439D9D45219FEB6F21 /* mainview.swift */,				266F22E20BF9426A8786772F /* visualeffectview.swift */,				82520495A5884CAB90DC0DF9 /* envvarview.swift */,				D80BCDDA0AD049A5A83C759F /* touchidservice.swift */,				E4C74286867C486EB7D12C63 /* backupmanager.swift */,				F273C3B7AC934489A3952AA5 /* updaterservice.swift */,				3694615A09AD4715A4770ACE /* shellconfigservice.swift */,				9505974106904790BF0DF22E /* package.swift */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE6C99BBB4234CB1A9E5B547 /* PathDeck */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE1419CD70664033AF398D50 /* Build configuration list for PBXNativeTarget "PathDeck" */;
+			buildPhases = (
+				2A5C8BD58B7240799B624EEA /* Sources */,
+				78D89D3D3C624F1483D394F6 /* Frameworks */,
+				323353734F0340EE8A72CDC7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PathDeck;
+			productName = PathDeck;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3EB8B2097A194F1996F9A4DE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = 1B544B0EECFE41B9A2383A52 /* Build configuration list for PBXProject "PathDeck" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EF032A8F0F9C4727A7292853;
+			productRefGroup = EF032A8F0F9C4727A7292853;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE6C99BBB4234CB1A9E5B547 /* PathDeck */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		323353734F0340EE8A72CDC7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A5C8BD58B7240799B624EEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A413ABBBA2D4A4C859FFCFB /* pathdeckapp.swift in Sources */,				9456D69062D64174AEB2282F /* models.swift in Sources */,				CCAD4B19FA6E463AB1A4BC1F /* shellconfigparser.swift in Sources */,				5DFB44BC3FCA4C818DD2ADE6 /* dashboardview.swift in Sources */,				C0AC9D0601904D509275D44C /* backupview.swift in Sources */,				C228FAC8C73341178BDC17A9 /* aliasstudioview.swift in Sources */,				021556E328B14F68BDDB204D /* sidebarview.swift in Sources */,				86FFBF2B48414826A9484E2D /* helpview.swift in Sources */,				12BB0CA78EDC47E18F5E7FC6 /* pathstackview.swift in Sources */,				517418A4EE5F44AAAC325C22 /* mainview.swift in Sources */,				96FADB4041BA41929D305156 /* visualeffectview.swift in Sources */,				FF4EE20931EF4325BCA97F4F /* envvarview.swift in Sources */,				A47D19FCBC8D47AB92406DF2 /* touchidservice.swift in Sources */,				B993C2F67AC24178A1D12A14 /* backupmanager.swift in Sources */,				E1C16D206B434EB984397E88 /* updaterservice.swift in Sources */,				A304D515D19D4EB9B2FE9E32 /* shellconfigservice.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0629F47540E94B4EB4568390 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "PathDeck requires biometric authentication to reveal sensitive environment variable values.";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amfi-disable.PathDeck";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		322F2A1A0296482C96A16A46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "PathDeck requires biometric authentication to reveal sensitive environment variable values.";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amfi-disable.PathDeck";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C3841AFF9D434E629535A31C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C42D3AFCCC824173BBBE5DB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE1419CD70664033AF398D50 /* Build configuration list for PBXNativeTarget "PathDeck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0629F47540E94B4EB4568390 /* Debug */,
+				322F2A1A0296482C96A16A46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B544B0EECFE41B9A2383A52 /* Build configuration list for PBXProject "PathDeck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3841AFF9D434E629535A31C /* Debug */,
+				C42D3AFCCC824173BBBE5DB3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3EB8B2097A194F1996F9A4DE /* Project object */;
+}

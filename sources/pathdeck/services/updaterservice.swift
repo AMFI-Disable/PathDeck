@@ -11,7 +11,7 @@ public final class UpdaterService {
     public var errorMessage: String? = nil
     
     // Default current version
-    public let currentVersion = "V1.0.0"
+    public let currentVersion = "V1.1.1"
     
     public init() {}
     
