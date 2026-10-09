@@ -16,39 +16,20 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## Installation & DMG Releases
+## Installation & Build
 
-Pre-packaged DMG installers are available in our project's **GitHub Releases** page:
-1. Navigate to the **Releases** section of this repository.
-2. Under the latest tag matching exactly `V1.0.0`, download the compiled `PathDeck.dmg` asset.
-3. Double-click the downloaded `PathDeck.dmg` file to mount the disk image, and drag `PathDeck.app` into your local `/Applications/` folder.
-
-### Bypassing Apple Gatekeeper Warnings
-Since PathDeck is compiled locally and distributed without Apple Developer notarization signatures, macOS Gatekeeper may present a security warning block upon launch:
-- **Right-Click Open Sequence**: Control-click (or right-click) the application icon in Finder, select **Open** from the context menu, and click **Open** again to authorize launch.
-- **Terminal Bypass**: Alternatively, strip quarantine metadata attributes recursively using the terminal:
-  ```bash
-  xattr -cr /Applications/PathDeck.app
-  ```
-
----
-
-## Local Compilation & Build Instructions
-
-PathDeck is built using pure Swift 5.10+ targeting macOS 14+. To compile and package the final release assets locally:
+PathDeck is built using pure Swift 5.10+ targeting macOS 14+. To compile and install locally:
 
 1. Clone this repository:
    ```bash
    git clone https://github.com/amfi-disable/PathDeck.git
    cd PathDeck
    ```
-2. Build and package the application bundle using our release script:
+2. Build the application using the build script:
    ```bash
    ./scripts/build.sh
    ```
-3. Locate the generated release assets in the project root folder:
-   - Standalone App: `./PathDeck.app`
-   - Compressed Installer: `./PathDeck.dmg`
+3. The built application bundle will be located at `./PathDeck.app`.
 
 ---
 
@@ -64,7 +45,6 @@ swift test
 Our `.gitignore` blocks build caches and output binaries from leaking into the remote tree. Ensure all compiled artifacts are kept locally:
 - `.build/`
 - `PathDeck.app/`
-- `PathDeck.dmg`
 
 ---
 
