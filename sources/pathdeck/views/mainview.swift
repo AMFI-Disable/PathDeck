@@ -7,9 +7,9 @@ public enum NavigationItem: String, CaseIterable, Identifiable {
     case aliasStudio = "Alias Studio"
     case envVariables = "Environment Variables"
     case backups = "Backups"
-    
+
     public var id: String { rawValue }
-    
+
     public var iconName: String {
         switch self {
         case .dashboard: return "square.grid.2x2"
@@ -27,10 +27,10 @@ public struct MainView: View {
     @State private var selection: NavigationItem? = .dashboard
     @State private var isSaving = false
     @State private var saveSuccess = false
-    @State private var saveError: String? = nil
-    
+    @State private var saveError: String?
+
     public init() {}
-    
+
     public var body: some View {
         NavigationSplitView {
             SidebarView(service: service, selection: $selection)
@@ -79,7 +79,7 @@ public struct MainView: View {
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             ToolbarItem(placement: .primaryAction) {
                 HStack(spacing: 12) {
                     // Revert / Discard Changes Button
@@ -89,7 +89,7 @@ public struct MainView: View {
                     .buttonStyle(.bordered)
                     .disabled(isSaving)
                     .help("Discard unsaved UI changes and reload last state from disk")
-                    
+
                     // Save Changes Button
                     Button(action: saveChanges) {
                         if isSaving {
@@ -115,7 +115,7 @@ public struct MainView: View {
             }
         }
     }
-    
+
     private var displayPath: String {
         guard let url = service.activeFileURL else { return "~/.zshrc" }
         let path = url.path
@@ -125,12 +125,12 @@ public struct MainView: View {
         }
         return path
     }
-    
+
     private func saveChanges() {
         isSaving = true
         saveSuccess = false
         saveError = nil
-        
+
         Task {
             do {
                 try await service.saveConfig()
@@ -145,7 +145,7 @@ public struct MainView: View {
             }
         }
     }
-    
+
     private func revertChanges() {
         guard let url = service.activeFileURL else { return }
         Task {
@@ -158,26 +158,23 @@ public struct MainView: View {
     }
 }
 
-
-
-
 /// Generic helper to draw premium HIG-compliant placeholder view contents.
 struct PlaceholderDetailView: View {
     let title: String
     let description: String
     let iconName: String
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: iconName)
                 .font(.system(size: 64))
                 .foregroundColor(.secondary)
-            
+
             Text(title)
                 .font(.title)
                 .bold()
                 .foregroundColor(.primary)
-            
+
             Text(description)
                 .font(.subheadline)
                 .foregroundColor(.secondary)

@@ -3,9 +3,9 @@ import SwiftUI
 /// HelpView displays the interactive user manual for PathDeck.
 public struct HelpView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     public init() {}
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -24,13 +24,13 @@ public struct HelpView: View {
             }
             .padding()
             .background(VisualEffectView(material: .headerView, blendingMode: .behindWindow))
-            
+
             Divider()
-            
+
             // Scrollable manual contents
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
+
                     // Welcome
                     HelpSection(
                         title: "1. Welcome to PathDeck",
@@ -38,7 +38,7 @@ public struct HelpView: View {
                         color: .green,
                         content: "PathDeck is a native macOS developer studio designed to visually manage, prioritize, and back up shell profiles (~/.zshrc and ~/.bash_profile). It replaces manual terminal text editing with a responsive, biometrically secured SwiftUI interface."
                     )
-                    
+
                     // PATH Stack
                     HelpSection(
                         title: "2. Managing the PATH Stack",
@@ -46,7 +46,7 @@ public struct HelpView: View {
                         color: .blue,
                         content: "• Drag & Drop: Drag rows to change search precedence. Top directories are searched first by your shell.\n• Active Verification: Directories are checked asynchronously in the background. Offline paths show orange warnings.\n• Disable Toggles: Temporarily exclude paths from export statements without deleting them."
                     )
-                    
+
                     // Alias Studio
                     HelpSection(
                         title: "3. Alias Studio shortcuts",
@@ -54,7 +54,7 @@ public struct HelpView: View {
                         color: .purple,
                         content: "• Register Shortcuts: Add new shell command triggers in the header inputs instantly.\n• Safe comment-outs: Toggling off an alias comments it out in your profile file rather than deleting it, allowing you to reactivate it later with no loss of data."
                     )
-                    
+
                     // Secrets Lock
                     HelpSection(
                         title: "4. Sensitive Variables (Touch ID)",
@@ -62,7 +62,7 @@ public struct HelpView: View {
                         color: .orange,
                         content: "• Visibility Masking: Sensitive keys (API keys, secrets) are masked as bullets (••••••••).\n• Biometrics prompt: Click the padlock icon to trigger Apple's Touch ID authentication sheet (or system passcode fallback) to reveal values.\n• Auto-relocking: Visible secrets automatically lock back when they disappear from the screen viewport."
                     )
-                    
+
                     // Rollbacks
                     HelpSection(
                         title: "5. Automated Backups & Restores",
@@ -85,7 +85,7 @@ struct HelpSection: View {
     let icon: String
     let color: Color
     let content: String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
@@ -96,7 +96,7 @@ struct HelpSection: View {
                     .font(.headline)
                     .foregroundColor(.primary)
             }
-            
+
             Text(content)
                 .font(.body)
                 .foregroundColor(.secondary)

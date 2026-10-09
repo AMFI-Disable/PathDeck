@@ -4,18 +4,18 @@ import SwiftUI
 public struct BackupView: View {
     @Environment(ShellConfigService.self) private var service
     @State private var backups: [BackupMetadata] = []
-    
-    @State private var errorMessage: String? = nil
-    @State private var successMessage: String? = nil
-    
+
+    @State private var errorMessage: String?
+    @State private var successMessage: String?
+
     // Safety confirmation dialog state
-    @State private var selectedBackup: BackupMetadata? = nil
+    @State private var selectedBackup: BackupMetadata?
     @State private var showingRestoreConfirmation = false
-    
+
     private let backupManager = BackupManager()
-    
+
     public init() {}
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header panel
@@ -29,16 +29,16 @@ public struct BackupView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                
+
                 Button(action: refreshBackups) {
                     Label("Refresh", systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.bordered)
             }
             .padding()
-            
+
             Divider()
-            
+
             // Success & Error banners
             if let errorMessage = errorMessage {
                 HStack {
@@ -57,7 +57,7 @@ public struct BackupView: View {
                 .background(Color.red.opacity(0.1))
                 Divider()
             }
-            
+
             if let successMessage = successMessage {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
@@ -75,7 +75,7 @@ public struct BackupView: View {
                 .background(Color.green.opacity(0.1))
                 Divider()
             }
-            
+
             // Backups List
             if backups.isEmpty {
                 VStack(spacing: 20) {
@@ -83,12 +83,12 @@ public struct BackupView: View {
                     Image(systemName: "clock.arrow.circlepath")
                         .font(.system(size: 64))
                         .foregroundColor(.secondary)
-                    
+
                     Text("No Restore Points Found")
                         .font(.title2)
                         .bold()
                         .foregroundColor(.primary)
-                    
+
                     Text("Every time you save modifications to ~/.zshrc or environment variables, a safe timestamped copy will automatically appear here.")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
@@ -105,12 +105,12 @@ public struct BackupView: View {
                             Image(systemName: "doc.text.fill")
                                 .font(.title)
                                 .foregroundColor(.blue)
-                            
+
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(backup.filename)
                                     .font(.headline)
                                     .fontWeight(.medium)
-                                
+
                                 HStack(spacing: 12) {
                                     Text(formatDate(backup.timestamp))
                                     Text("•")
@@ -119,9 +119,9 @@ public struct BackupView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             Button(action: {
                                 selectedBackup = backup
                                 showingRestoreConfirmation = true
@@ -136,7 +136,7 @@ public struct BackupView: View {
                 }
                 .listStyle(.inset)
             }
-            
+
             // Footer status bar
             HStack {
                 Text("\(backups.count) total backups logged")
@@ -167,7 +167,7 @@ public struct BackupView: View {
             Text("This will replace your current configuration profile (~/.zshrc) with the snapshot \(backup.filename). This action will reload active layouts.")
         }
     }
-    
+
     private func refreshBackups() {
         do {
             self.backups = try backupManager.listBackups()
@@ -175,7 +175,7 @@ public struct BackupView: View {
             errorMessage = "Failed to list backups: \(error.localizedDescription)"
         }
     }
-    
+
     private func performRestore(_ backup: BackupMetadata) {
         Task {
             do {
@@ -193,14 +193,14 @@ public struct BackupView: View {
             }
         }
     }
-    
+
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         return formatter.string(from: date)
     }
-    
+
     private func formatFileSize(_ bytes: Int64) -> String {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits = [.useAll]

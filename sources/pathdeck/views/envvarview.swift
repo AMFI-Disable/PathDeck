@@ -3,21 +3,21 @@ import SwiftUI
 /// Ledger list displaying environment variables, enabling secrets masking, and featuring Touch ID secure unlock.
 public struct EnvVarView: View {
     @Environment(ShellConfigService.self) private var service
-    
+
     // Header inputs for adding variables
     @State private var newKey = ""
     @State private var newValue = ""
     @State private var newIsSensitive = false
-    
+
     // UI state parameters
     @State private var searchText = ""
     @State private var unlockedIds: Set<UUID> = []
-    
+
     @State private var isSaving = false
-    @State private var errorMessage: String? = nil
-    
+    @State private var errorMessage: String?
+
     public init() {}
-    
+
     private var filteredVariables: Binding<[EnvVarItem]> {
         Binding(
             get: {
@@ -40,10 +40,10 @@ public struct EnvVarView: View {
             }
         )
     }
-    
+
     public var body: some View {
         @Bindable var service = service
-        
+
         VStack(alignment: .leading, spacing: 0) {
             // Title Header
             HStack {
@@ -56,7 +56,7 @@ public struct EnvVarView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                
+
                 Button(action: saveVariables) {
                     if isSaving {
                         ProgressView()
@@ -69,28 +69,28 @@ public struct EnvVarView: View {
                 .disabled(isSaving)
             }
             .padding()
-            
+
             Divider()
-            
+
             // Add Variable Panel
             VStack(alignment: .leading, spacing: 8) {
                 Text("Add Environment Variable")
                     .font(.headline)
                     .foregroundColor(.secondary)
-                
+
                 HStack(spacing: 12) {
                     TextField("Name (e.g. API_KEY)", text: $newKey)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 180)
-                    
+
                     TextField("Value", text: $newValue)
                         .textFieldStyle(.roundedBorder)
-                    
+
                     Toggle(isOn: $newIsSensitive) {
                         Label("Sensitive", systemImage: "lock.shield")
                     }
                     .toggleStyle(.checkbox)
-                    
+
                     Button(action: addNewVariable) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
@@ -101,9 +101,9 @@ public struct EnvVarView: View {
             }
             .padding()
             .background(Color(NSColor.controlBackgroundColor).opacity(0.4))
-            
+
             Divider()
-            
+
             // Error panel if any
             if let errorMessage = errorMessage {
                 HStack {
@@ -122,7 +122,7 @@ public struct EnvVarView: View {
                 .background(Color.red.opacity(0.1))
                 Divider()
             }
-            
+
             // Search field
             HStack {
                 Image(systemName: "magnifyingglass")
@@ -141,7 +141,7 @@ public struct EnvVarView: View {
             .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
             .cornerRadius(6)
             .padding([.horizontal, .top])
-            
+
             // Variables List
             List {
                 ForEach(filteredVariables) { $item in
@@ -160,12 +160,12 @@ public struct EnvVarView: View {
                                 .font(.system(size: 10))
                                 .frame(width: 16)
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text(item.key)
                                 .font(.headline)
                                 .fontWeight(.medium)
-                            
+
                             if item.isSensitive && !unlockedIds.contains(item.id) {
                                 Text("••••••••")
                                     .font(.system(.body, design: .monospaced))
@@ -179,9 +179,9 @@ public struct EnvVarView: View {
                                     .foregroundColor(.primary)
                             }
                         }
-                        
+
                         Spacer()
-                        
+
                         // Masking toggle
                         Toggle("", isOn: $item.isSensitive)
                             .toggleStyle(.switch)
@@ -196,7 +196,7 @@ public struct EnvVarView: View {
                 .onDelete(perform: deleteVariable)
             }
             .listStyle(.inset)
-            
+
             // Footer Info
             HStack {
                 Text("\(service.envVars.count) variables loaded")
@@ -212,31 +212,31 @@ public struct EnvVarView: View {
             .background(Color(NSColor.windowBackgroundColor).opacity(0.4))
         }
     }
-    
+
     private func addNewVariable() {
         let key = newKey.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         let val = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        
+
         guard !key.isEmpty, !val.isEmpty else { return }
-        
+
         let newItem = EnvVarItem(
             key: key,
             value: val,
             isSensitive: newIsSensitive
         )
-        
+
         service.envVars.append(newItem)
-        
+
         // Reset fields
         newKey = ""
         newValue = ""
         newIsSensitive = false
     }
-    
+
     private func deleteVariable(at offsets: IndexSet) {
         service.envVars.remove(atOffsets: offsets)
     }
-    
+
     /// Biometric credential unlock action hook calling local authentication asynchronously.
     private func didTapSecureField(for item: EnvVarItem) {
         if unlockedIds.contains(item.id) {
@@ -255,11 +255,11 @@ public struct EnvVarView: View {
             }
         }
     }
-    
+
     private func saveVariables() {
         isSaving = true
         errorMessage = nil
-        
+
         Task {
             do {
                 try await service.saveConfig()

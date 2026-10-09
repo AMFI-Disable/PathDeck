@@ -4,12 +4,12 @@ import SwiftUI
 public struct SidebarView: View {
     @Bindable var service: ShellConfigService
     @Binding public var selection: NavigationItem?
-    
+
     public init(service: ShellConfigService, selection: Binding<NavigationItem?>) {
         self.service = service
         self._selection = selection
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             List(selection: $selection) {
@@ -21,13 +21,13 @@ public struct SidebarView: View {
                                     .font(.title3)
                                     .foregroundColor(.accentColor)
                                     .frame(width: 24, height: 24)
-                                
+
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(item.rawValue)
                                         .font(.headline)
                                         .fontWeight(.medium)
                                         .foregroundColor(.primary)
-                                    
+
                                     Text(subtitle(for: item))
                                         .font(.caption2)
                                         .foregroundColor(.secondary)
@@ -39,9 +39,9 @@ public struct SidebarView: View {
                 }
             }
             .listStyle(.sidebar)
-            
+
             Divider()
-            
+
             // Standard Semantic Versioning UI reference display label
             HStack {
                 Spacer()
@@ -54,7 +54,7 @@ public struct SidebarView: View {
             .background(Color(NSColor.controlBackgroundColor).opacity(0.2))
         }
     }
-    
+
     private func subtitle(for item: NavigationItem) -> String {
         switch item {
         case .dashboard:

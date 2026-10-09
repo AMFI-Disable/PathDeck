@@ -4,13 +4,13 @@ import SwiftUI
 public struct PathStackView: View {
     @Environment(ShellConfigService.self) private var service
     @State private var isSaving = false
-    @State private var errorMessage: String? = nil
-    
+    @State private var errorMessage: String?
+
     public init() {}
-    
+
     public var body: some View {
         @Bindable var service = service
-        
+
         VStack(alignment: .leading, spacing: 0) {
             // Header bar
             HStack {
@@ -23,7 +23,7 @@ public struct PathStackView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                
+
                 Button(action: savePaths) {
                     if isSaving {
                         ProgressView()
@@ -36,9 +36,9 @@ public struct PathStackView: View {
                 .disabled(isSaving)
             }
             .padding()
-            
+
             Divider()
-            
+
             if let errorMessage = errorMessage {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
@@ -55,7 +55,7 @@ public struct PathStackView: View {
                 .padding()
                 .background(Color.red.opacity(0.1))
             }
-            
+
             // List with drag reordering
             List {
                 ForEach($service.pathItems) { $item in
@@ -65,24 +65,24 @@ public struct PathStackView: View {
                                 .font(.title3)
                                 .foregroundColor(.secondary)
                                 .padding(.trailing, 4)
-                            
+
                             // Visual status bubble
                             Image(systemName: item.isValid ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
                                 .foregroundColor(item.isValid ? .green : .orange)
                                 .font(.system(size: 16))
-                            
+
                             Text(item.rawPath)
                                 .font(.system(.body, design: .monospaced))
                                 .foregroundColor(item.isEnabled ? .primary : .secondary)
                                 .strikethrough(!item.isEnabled, color: .secondary)
-                            
+
                             Spacer()
-                            
+
                             Toggle("", isOn: $item.isEnabled)
                                 .toggleStyle(.switch)
                                 .labelsHidden()
                         }
-                        
+
                         // Warning card layout if path is invalid/broken
                         if !item.isValid {
                             HStack(spacing: 8) {
@@ -109,7 +109,7 @@ public struct PathStackView: View {
                 }
             }
             .listStyle(.inset)
-            
+
             // Status bar
             HStack {
                 Text("\(service.pathItems.count) total stack items")
@@ -125,11 +125,11 @@ public struct PathStackView: View {
             .background(Color(NSColor.windowBackgroundColor).opacity(0.4))
         }
     }
-    
+
     private func savePaths() {
         isSaving = true
         errorMessage = nil
-        
+
         Task {
             do {
                 try await service.saveConfig()
