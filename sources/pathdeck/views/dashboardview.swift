@@ -4,13 +4,13 @@ import SwiftUI
 public struct DashboardView: View {
     @Environment(ShellConfigService.self) private var service
     @State private var updater = UpdaterService()
-    
+
     public init() {}
-    
+
     private var brokenPathsCount: Int {
         service.pathItems.filter { !$0.isValid }.count
     }
-    
+
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -23,14 +23,14 @@ public struct DashboardView: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
-                
+
                 // Update Available Banner (Checks GitHub Releases API dynamically)
                 if updater.isUpdateAvailable, let latest = updater.latestVersion {
                     HStack(alignment: .top, spacing: 12) {
                         Image(systemName: "arrow.down.circle.fill")
                             .font(.title)
                             .foregroundColor(.blue)
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text("New Update Available: \(latest)")
                                 .font(.headline)
@@ -38,7 +38,7 @@ public struct DashboardView: View {
                             Text("A newer version of PathDeck is available on GitHub. You can download the latest package to update your app.")
                                 .font(.body)
                                 .foregroundColor(.secondary)
-                            
+
                             Button(action: {
                                 if let url = URL(string: "https://github.com/amfi-disable/PathDeck/releases/latest") {
                                     NSWorkspace.shared.open(url)
@@ -59,14 +59,14 @@ public struct DashboardView: View {
                             .stroke(Color.blue.opacity(0.2), lineWidth: 1)
                     )
                 }
-                
+
                 // Alert Banner if there are broken paths
                 if brokenPathsCount > 0 {
                     HStack(alignment: .top, spacing: 12) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.title)
                             .foregroundColor(.orange)
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text("PATH Stack Alerts Detected")
                                 .font(.headline)
@@ -88,7 +88,7 @@ public struct DashboardView: View {
                         Image(systemName: "checkmark.seal.fill")
                             .font(.title)
                             .foregroundColor(.green)
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text("PATH Stack Healthy")
                                 .font(.headline)
@@ -106,7 +106,7 @@ public struct DashboardView: View {
                             .stroke(Color.green.opacity(0.2), lineWidth: 1)
                     )
                 }
-                
+
                 // Statistics Cards Grid (3 Columns)
                 Grid(horizontalSpacing: 16, verticalSpacing: 16) {
                     GridRow {
@@ -117,7 +117,7 @@ public struct DashboardView: View {
                             iconName: "arrow.up.and.down.square",
                             accentColor: .blue
                         )
-                        
+
                         StatCard(
                             title: "Alias Studio",
                             value: "\(service.aliases.filter { $0.isEnabled }.count)",
@@ -125,7 +125,7 @@ public struct DashboardView: View {
                             iconName: "terminal",
                             accentColor: .purple
                         )
-                        
+
                         StatCard(
                             title: "Secure Env",
                             value: "\(service.envVars.filter { $0.isSensitive }.count)",
@@ -135,13 +135,13 @@ public struct DashboardView: View {
                         )
                     }
                 }
-                
+
                 // PATH Folder Verification Checklist
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Directory Path Checklist")
                         .font(.headline)
                         .foregroundColor(.primary)
-                    
+
                     VStack(spacing: 0) {
                         if service.pathItems.isEmpty {
                             Text("No directories configured in PATH stack.")
@@ -155,9 +155,9 @@ public struct DashboardView: View {
                                     Text(item.rawPath)
                                         .font(.system(.body, design: .monospaced))
                                         .foregroundColor(item.isEnabled ? .primary : .secondary)
-                                    
+
                                     Spacer()
-                                    
+
                                     // Status tag badge
                                     HStack(spacing: 4) {
                                         Image(systemName: item.isValid ? "checkmark.circle.fill" : "xmark.octagon.fill")
@@ -174,7 +174,7 @@ public struct DashboardView: View {
                                 }
                                 .padding(.vertical, 10)
                                 .padding(.horizontal)
-                                
+
                                 if item.id != service.pathItems.last?.id {
                                     Divider()
                                 }
@@ -207,7 +207,7 @@ struct StatCard: View {
     let subtitle: String
     let iconName: String
     let accentColor: Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -219,11 +219,11 @@ struct StatCard: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
             }
-            
+
             Text(value)
                 .font(.system(size: 36, weight: .bold))
                 .foregroundColor(.primary)
-            
+
             Text(subtitle)
                 .font(.caption)
                 .foregroundColor(.secondary)

@@ -12,17 +12,17 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct PathDeckApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    
+
     // Instantiate our central state coordinator
     @State private var service = ShellConfigService()
-    
+
     @Environment(\.openWindow) private var openWindow
-    
+
     init() {
         // Make the app a regular foreground GUI app, enabling dock icon and window focus
         NSApplication.shared.setActivationPolicy(.regular)
     }
-    
+
     var body: some Scene {
         WindowGroup("PathDeck Studio") {
             MainView()
@@ -39,7 +39,7 @@ struct PathDeckApp: App {
                 .keyboardShortcut("?", modifiers: .command)
             }
         }
-        
+
         // Help Manual Window Group
         Window("PathDeck Help Manual", id: "help-manual") {
             HelpView()

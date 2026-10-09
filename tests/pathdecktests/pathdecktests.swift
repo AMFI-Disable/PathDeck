@@ -7,12 +7,12 @@ final class PathDeckTests: XCTestCase {
         XCTAssertEqual(pathItem.rawPath, "/usr/local/bin")
         XCTAssertTrue(pathItem.isValid)
         XCTAssertTrue(pathItem.isEnabled)
-        
+
         let aliasItem = AliasItem(name: "ll", command: "ls -la", comment: "List details")
         XCTAssertEqual(aliasItem.name, "ll")
         XCTAssertEqual(aliasItem.command, "ls -la")
         XCTAssertEqual(aliasItem.comment, "List details")
-        
+
         let envVarItem = EnvVarItem(key: "API_KEY", value: "secret", isSensitive: true)
         XCTAssertEqual(envVarItem.key, "API_KEY")
         XCTAssertEqual(envVarItem.value, "secret")

@@ -4,3 +4,4 @@ PathDeck.app/
 PathDeck.dmg
 appicon.icns
 dmg_temp/
+*.xcodeproj/

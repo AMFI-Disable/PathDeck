@@ -9,7 +9,7 @@ public struct PATHItem: Identifiable, Equatable, Hashable {
     public var isValid: Bool
     /// Indicates whether this path export is active or commented out.
     public var isEnabled: Bool
-    
+
     public init(id: UUID = UUID(), rawPath: String, isValid: Bool = false, isEnabled: Bool = true) {
         self.id = id
         self.rawPath = rawPath
@@ -29,7 +29,7 @@ public struct AliasItem: Identifiable, Equatable, Hashable {
     public var comment: String?
     /// Indicates whether this alias is active or commented out.
     public var isEnabled: Bool
-    
+
     public init(id: UUID = UUID(), name: String, command: String, comment: String? = nil, isEnabled: Bool = true) {
         self.id = id
         self.name = name
@@ -48,7 +48,7 @@ public struct EnvVarItem: Identifiable, Equatable, Hashable {
     public var value: String
     /// Indicates whether the value should be hidden behind Touch ID biometrics.
     public var isSensitive: Bool
-    
+
     public init(id: UUID = UUID(), key: String, value: String, isSensitive: Bool = false) {
         self.id = id
         self.key = key
@@ -65,7 +65,7 @@ public enum ConfigLine: Identifiable, Equatable, Hashable {
     case comment(text: String)
     case empty
     case raw(content: String)
-    
+
     /// Stable hashable identifier for SwiftUI List rendering stability
     public var id: String {
         switch self {
