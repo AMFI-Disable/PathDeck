@@ -7,6 +7,10 @@ final class PathDeckTests: XCTestCase {
         XCTAssertEqual(pathItem.rawPath, "/usr/local/bin")
         XCTAssertTrue(pathItem.isValid)
         XCTAssertTrue(pathItem.isEnabled)
+        XCTAssertTrue(pathItem.isPrepend, "PATH entries must default to prepend semantics.")
+
+        let appendItem = PATHItem(rawPath: "/opt/local/bin", isPrepend: false)
+        XCTAssertFalse(appendItem.isPrepend, "PATH append direction must round-trip through the model.")
 
         let aliasItem = AliasItem(name: "ll", command: "ls -la", comment: "List details")
         XCTAssertEqual(aliasItem.name, "ll")

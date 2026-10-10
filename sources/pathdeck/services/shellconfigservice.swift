@@ -61,8 +61,8 @@ public final class ShellConfigService {
 
                 for line in lines {
                     switch line {
-                    case .pathExport(let path, _, _):
-                        paths.append(PATHItem(rawPath: path, isValid: false, isEnabled: true))
+                    case .pathExport(let path, let isPrepend, _):
+                        paths.append(PATHItem(rawPath: path, isValid: false, isEnabled: true, isPrepend: isPrepend))
                     case .alias(let name, let value, let isEnabled, let comment):
                         loadedAliases.append(AliasItem(name: name, command: value, comment: comment, isEnabled: isEnabled))
                     case .envVar(let name, let value, let isSensitive, _):
@@ -128,6 +128,15 @@ public final class ShellConfigService {
 
             var updatedLines = [ConfigLine]()
 
+            // Preserve each path's original prepend/append direction and inline comment keyed by raw path,
+            // so consolidating the stack never silently rewrites append-style exports into prepends.
+            var pathMetadata = [String: (isPrepend: Bool, comment: String?)]()
+            for line in parsedLines {
+                if case .pathExport(let path, let isPrepend, let comment) = line, pathMetadata[path] == nil {
+                    pathMetadata[path] = (isPrepend, comment)
+                }
+            }
+
             for line in parsedLines {
                 switch line {
                 case .pathExport:
@@ -146,7 +155,12 @@ public final class ShellConfigService {
             }
 
             for item in pathItems {
-                updatedLines.append(.pathExport(path: item.rawPath, isPrepend: true, comment: nil))
+                let metadata = pathMetadata[item.rawPath]
+                updatedLines.append(.pathExport(
+                    path: item.rawPath,
+                    isPrepend: metadata?.isPrepend ?? item.isPrepend,
+                    comment: metadata?.comment
+                ))
             }
 
             let contents = ShellConfigParser.serialize(updatedLines)
