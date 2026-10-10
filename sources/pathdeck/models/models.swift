@@ -9,12 +9,15 @@ public struct PATHItem: Identifiable, Equatable, Hashable {
     public var isValid: Bool
     /// Indicates whether this path export is active or commented out.
     public var isEnabled: Bool
+    /// Indicates whether this entry prepends (true) or appends (false) to the existing PATH stack.
+    public var isPrepend: Bool
 
-    public init(id: UUID = UUID(), rawPath: String, isValid: Bool = false, isEnabled: Bool = true) {
+    public init(id: UUID = UUID(), rawPath: String, isValid: Bool = false, isEnabled: Bool = true, isPrepend: Bool = true) {
         self.id = id
         self.rawPath = rawPath
         self.isValid = isValid
         self.isEnabled = isEnabled
+        self.isPrepend = isPrepend
     }
 }
 
