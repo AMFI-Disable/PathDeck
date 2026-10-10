@@ -46,16 +46,26 @@ public final class ShellConfigParser {
                 continue
             }
 
-            // 2. Match Pure Comment (Starts with #)
+            let nsString = line as NSString
+            let range = NSRange(location: 0, length: nsString.length)
+
+            // 2. Match Commented-Out Alias (# alias gs="git status") so deactivated
+            //    shortcuts survive save/load round-trips instead of collapsing into comments
+            if let match = disabledAliasRegex.firstMatch(in: line, options: [], range: range) {
+                let nameVal = nsString.substring(with: match.range(at: 1))
+                let cmdVal = nsString.substring(with: match.range(at: 3))
+                let commentVal = match.range(at: 4).location != NSNotFound ? nsString.substring(with: match.range(at: 4)) : nil
+                parsedLines.append(.alias(name: nameVal, value: cmdVal, isEnabled: false, comment: commentVal))
+                continue
+            }
+
+            // 3. Match Pure Comment (Starts with #)
             if trimmed.hasPrefix("#") {
                 parsedLines.append(.comment(text: line))
                 continue
             }
 
-            let nsString = line as NSString
-            let range = NSRange(location: 0, length: nsString.length)
-
-            // 3. Match PATH Prepend (export PATH="/dir:$PATH")
+            // 4. Match PATH Prepend (export PATH="/dir:$PATH")
             if let match = pathPrependRegex.firstMatch(in: line, options: [], range: range) {
                 let pathVal = nsString.substring(with: match.range(at: 2))
                 let commentVal = match.range(at: 3).location != NSNotFound ? nsString.substring(with: match.range(at: 3)) : nil
@@ -63,7 +73,7 @@ public final class ShellConfigParser {
                 continue
             }
 
-            // 4. Match PATH Append (export PATH="$PATH:/dir")
+            // 5. Match PATH Append (export PATH="$PATH:/dir")
             if let match = pathAppendRegex.firstMatch(in: line, options: [], range: range) {
                 let pathVal = nsString.substring(with: match.range(at: 2))
                 let commentVal = match.range(at: 3).location != NSNotFound ? nsString.substring(with: match.range(at: 3)) : nil
@@ -71,7 +81,7 @@ public final class ShellConfigParser {
                 continue
             }
 
-            // 5. Match Alias (alias name="value")
+            // 6. Match Alias (alias name="value")
             if let match = aliasRegex.firstMatch(in: line, options: [], range: range) {
                 let nameVal = nsString.substring(with: match.range(at: 1))
                 let cmdVal = nsString.substring(with: match.range(at: 3))
@@ -80,7 +90,7 @@ public final class ShellConfigParser {
                 continue
             }
 
-            // 6. Match Environment Variables (export NAME="value")
+            // 7. Match Environment Variables (export NAME="value")
             if let match = envVarRegex.firstMatch(in: line, options: [], range: range) {
                 let keyVal = nsString.substring(with: match.range(at: 1))
                 let valVal = nsString.substring(with: match.range(at: 3))
@@ -94,7 +104,7 @@ public final class ShellConfigParser {
                 continue
             }
 
-            // 7. Safety Fallback: treat as raw line to preserve loops, conditionals, or custom commands
+            // 8. Safety Fallback: treat as raw line to preserve loops, conditionals, or custom commands
             parsedLines.append(.raw(content: line))
         }
 
