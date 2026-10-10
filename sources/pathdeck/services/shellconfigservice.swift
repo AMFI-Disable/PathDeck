@@ -227,7 +227,9 @@ public final class ShellConfigService {
     /// Reads the kernel-reported resident set size (in megabytes) for the current task.
     private static func currentResidentFootprintMB() -> Double {
         var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MACH_TASK_BASIC_INFO_COUNT)
+        // MACH_TASK_BASIC_INFO_COUNT is a sizeof-based C macro the Swift importer
+        // cannot surface, so derive the count from the struct layout instead.
+        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size / MemoryLayout<integer_t>.size)
 
         let result = withUnsafeMutablePointer(to: &info) { infoPointer in
             infoPointer.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { integerPointer in
