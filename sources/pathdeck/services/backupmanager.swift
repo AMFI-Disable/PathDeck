@@ -169,13 +169,23 @@ public final class BackupManager {
             }
         }
 
-        // 3. Execute safe atomic overwrite
+        // 3. Stage the backup copy beside the target, then swap it in atomically so an
+        //    interrupted restore can never leave a truncated live configuration behind
+        let stagedURL = targetURL.deletingLastPathComponent()
+            .appendingPathComponent(".pathdeck_restore_staging_\(UUID().uuidString)")
+
         do {
+            try fileManager.copyItem(at: backupURL, to: stagedURL)
+
             if fileManager.fileExists(atPath: targetURL.path) {
-                try fileManager.removeItem(at: targetURL)
+                _ = try fileManager.replaceItemAt(targetURL, withItemAt: stagedURL, backupItemName: nil, options: [])
+            } else {
+                try fileManager.moveItem(at: stagedURL, to: targetURL)
             }
-            try fileManager.copyItem(at: backupURL, to: targetURL)
         } catch {
+            // Best-effort cleanup of the staged copy before surfacing the failure
+            try? fileManager.removeItem(at: stagedURL)
+
             throw NSError(
                 domain: "PathDeck.BackupManager",
                 code: 102,

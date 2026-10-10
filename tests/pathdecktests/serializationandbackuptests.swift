@@ -102,5 +102,35 @@ export DOCKER_HOST="tcp://localhost:2375"
 
         let restoredContent = try String(contentsOf: targetFile, encoding: .utf8)
         XCTAssertEqual(restoredContent, "backup content")
+
+        // No staging artifacts may be left behind after a successful restore
+        let leftovers = try fileManager.contentsOfDirectory(atPath: suiteTempDir.path)
+        XCTAssertFalse(
+            leftovers.contains { $0.hasPrefix(".pathdeck_restore_staging_") },
+            "Atomic restore staging copy leaked into the destination directory."
+        )
+    }
+
+    /// Tests that restoring onto a missing target path materializes the file instead of failing.
+    func testBackupManagerRestoreOverMissingTarget() throws {
+        let fileManager = FileManager.default
+        let suiteTempDir = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+
+        defer {
+            try? fileManager.removeItem(at: suiteTempDir)
+        }
+
+        let targetFile = suiteTempDir.appendingPathComponent(".zshrc")
+        let backupFile = suiteTempDir.appendingPathComponent(".zshrc_backup")
+
+        try fileManager.createDirectory(at: suiteTempDir, withIntermediateDirectories: true)
+        try "rescue content".write(to: backupFile, atomically: true, encoding: .utf8)
+
+        let manager = BackupManager(backupsDirectory: suiteTempDir)
+        try manager.restoreBackup(from: backupFile, over: targetFile)
+
+        XCTAssertTrue(fileManager.fileExists(atPath: targetFile.path), "Restore over missing target must create the file.")
+        let restoredContent = try String(contentsOf: targetFile, encoding: .utf8)
+        XCTAssertEqual(restoredContent, "rescue content")
     }
 }
