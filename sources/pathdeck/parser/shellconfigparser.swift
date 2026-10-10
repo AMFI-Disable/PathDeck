@@ -22,6 +22,11 @@ public final class ShellConfigParser {
         options: []
     )
 
+    private static let disabledAliasRegex = try! NSRegularExpression(
+        pattern: #"^\s*#\s*alias\s+([a-zA-Z0-9_\.\-]+)\s*=\s*(["'])(.*?)\2\s*(?:#\s*(.*))?$"#,
+        options: []
+    )
+
     private static let envVarRegex = try! NSRegularExpression(
         pattern: #"^\s*export\s+([a-zA-Z0-9_]+)\s*=\s*(["'])(.*?)\2\s*(?:#\s*(.*))?$"#,
         options: []
