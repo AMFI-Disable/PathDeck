@@ -33,6 +33,6 @@ body:
       placeholder: |
         - macOS Version: macOS 14.5
         - Shell: zsh 5.9
-        - PathDeck Version: V1.0.0
+        - PathDeck Version: V1.0.1
     validations:
       required: true

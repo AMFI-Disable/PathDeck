@@ -1,4 +1,6 @@
-# PathDeck Studio (V1.0.0)
+# PathDeck Studio (V1.0.1)
+
+> **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](CHANGELOG.md) for the farewell release notes.
 
 PathDeck is a premium, native macOS developer studio designed to visually manage, prioritize, audit, and safely back up shell environment configurations (specifically targeting `~/.zshrc` and `~/.bash_profile`).
 
