@@ -1,6 +1,6 @@
 # PathDeck Studio (V1.0.1)
 
-> **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](CHANGELOG.md) for the farewell release notes.
+> **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
 
 PathDeck is a premium, native macOS developer studio designed to visually manage, prioritize, audit, and safely back up shell environment configurations (specifically targeting `~/.zshrc` and `~/.bash_profile`).
 
@@ -24,7 +24,7 @@ PathDeck is built using pure Swift 5.10+ targeting macOS 14+. To compile and ins
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/amfi-disable/PathDeck.git
+   git clone https://github.com/AMFI-Disable/PathDeck.git
    cd PathDeck
    ```
 2. Build the application using the build script:

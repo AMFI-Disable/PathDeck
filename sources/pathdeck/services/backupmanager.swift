@@ -29,12 +29,12 @@ public final class BackupManager {
             self.backupsDirectory = customDir
         } else {
             let fileManager = FileManager.default
-            let appSupport = try! fileManager.url(
+            let appSupport = (try? fileManager.url(
                 for: .applicationSupportDirectory,
                 in: .userDomainMask,
                 appropriateFor: nil,
                 create: true
-            )
+            )) ?? fileManager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support", isDirectory: true)
             self.backupsDirectory = appSupport.appendingPathComponent("PathDeck/backups", isDirectory: true)
         }
     }

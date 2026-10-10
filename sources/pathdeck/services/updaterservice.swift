@@ -24,7 +24,7 @@ public final class UpdaterService {
             self.errorMessage = nil
         }
 
-        let urlString = "https://api.github.com/repos/amfi-disable/PathDeck/releases/latest"
+        let urlString = "https://api.github.com/repos/AMFI-Disable/PathDeck/releases/latest"
         guard let url = URL(string: urlString) else {
             await MainActor.run {
                 self.isChecking = false
