@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 import Observation
 
@@ -218,8 +219,23 @@ public final class ShellConfigService {
         }
     }
 
-    /// Measures memory usage diagnostics
+    /// Measures the live resident memory footprint of this process for dashboard diagnostics.
     public func updateMemoryUsage() {
-        self.memoryFootprintMB = 1.75
+        self.memoryFootprintMB = Self.currentResidentFootprintMB()
+    }
+
+    /// Reads the kernel-reported resident set size (in megabytes) for the current task.
+    private static func currentResidentFootprintMB() -> Double {
+        var info = mach_task_basic_info()
+        var count = mach_msg_type_number_t(MACH_TASK_BASIC_INFO_COUNT)
+
+        let result = withUnsafeMutablePointer(to: &info) { infoPointer in
+            infoPointer.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { integerPointer in
+                task_info(mach_task_self_, task_flavor_t(MACH_TASK_BASIC_INFO), integerPointer, &count)
+            }
+        }
+
+        guard result == KERN_SUCCESS else { return 0.0 }
+        return Double(info.resident_size) / (1024.0 * 1024.0)
     }
 }
