@@ -18,33 +18,65 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## Installation & Build
+## Installation And Build
+
+### Manual DMG Package (GitHub Releases)
+
+Download the verified `.dmg` package from [GitHub Releases](https://github.com/AMFI-Disable/PathDeck/releases). Verify the SHA-256 checksum after download:
+
+```bash
+shasum -a 256 pathdeck-1.0.1.dmg
+```
+
+#### macOS Gatekeeper Clearance (Unnotarized Open-Source Build)
+
+Because PathDeck is an open-source build provided without a paid Apple Developer ID certificate ($99/year), macOS Gatekeeper quarantines downloaded application bundles on first launch.
+
+To clear the quarantine flag via Terminal:
+
+```bash
+sudo xattr -r -c /Applications/PathDeck.app
+```
+
+Alternatively, open **System Settings > Privacy & Security**, scroll down to the Security section, and click **Open Anyway** (or hold `Control` while clicking the app in Finder and select **Open**).
+
+---
+
+### Build From Source
 
 PathDeck is built using pure Swift 5.10+ targeting macOS 14+. To compile and install locally:
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/AMFI-Disable/PathDeck.git
    cd PathDeck
    ```
+
 2. Build the application using the build script:
+
    ```bash
    ./scripts/build.sh
    ```
+
 3. The built application bundle will be located at `./PathDeck.app`.
 
 ---
 
-## Development & Test Commands
+## Development And Test Commands
 
 ### Run Unit Tests
+
 To run our test suites containing edge-case tokenizer parser and backup restoration validations:
+
 ```bash
 swift test
 ```
 
 ### Clean Tree
+
 Our `.gitignore` blocks build caches and output binaries from leaking into the remote tree. Ensure all compiled artifacts are kept locally:
+
 - `.build/`
 - `PathDeck.app/`
 
@@ -53,6 +85,7 @@ Our `.gitignore` blocks build caches and output binaries from leaking into the r
 ## Open-Source Contributions
 
 Contributions are welcome! Please follow these guidelines:
+
 - Fork the repository and create your feature branches off `main`.
 - Write accompanying unit tests under `tests/pathdecktests/` for parser engine modifications.
 - Ensure that the application memory footprint remains under 20MB.
