@@ -1,4 +1,34 @@
-# PathDeck Studio (V1.0.1)
+# 🧭 PathDeck
+
+<div align="center">
+
+**The Modern Native macOS Developer Studio For Shell Environment Management**  
+*Lightning-fast, native SwiftUI GUI companion for visual PATH prioritization, alias studio, and zero-loss backup restores.*
+
+[![Platform: macOS Sonoma+](https://img.shields.io/badge/Platform-macOS%2014%2B%20(Sonoma%20%2F%20Sequoia)-blue.svg?style=flat-square&logo=apple)](https://apple.com)
+[![Swift: 5.10+](https://img.shields.io/badge/Swift-5.10%2B-orange.svg?style=flat-square&logo=swift)](https://swift.org)
+[![Release: v1.0.1](https://img.shields.io/badge/Release-v1.0.1-blue.svg?style=flat-square&logo=github)](https://github.com/AMFI-Disable/PathDeck/releases)
+[![Tests: Passing](https://img.shields.io/badge/Tests-Passing%20(100%25)-success.svg?style=flat-square&logo=checkmarx)](#automated-tests-and-quality-assurance)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](license)
+[![Pricing: Free & Open-Source](https://img.shields.io/badge/Pricing-100%25%20Free%20%26%20Open%20Source-success.svg?style=flat-square)](#overview-and-core-value)
+[![Privacy: Zero Telemetry](https://img.shields.io/badge/Privacy-Zero%20Telemetry%20%2F%20100%25%20Local-purple.svg?style=flat-square)](#privacy-and-security-first)
+
+</div>
+
+---
+
+## 🧭 Table Of Contents
+
+- [Overview & Core Value](#overview-and-core-value)
+- [Key Features](#key-features)
+- [Installation Guide](#installation-guide)
+- [Automated Tests & Quality Assurance](#automated-tests-and-quality-assurance)
+- [Privacy & Security First](#privacy-and-security-first)
+- [License & Open Source](#license-and-open-source)
+
+---
+
+## ⚡ Overview And Core Value <a id="overview-and-core-value"></a>
 
 > **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
 
@@ -8,7 +38,7 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## Key Features
+## 🚀 Key Features <a id="key-features"></a>
 
 - **PATH Stack Studio**: Drag-and-drop to prioritize search pathways with visual status dot indicators (Green checkmark denotes folders that exist on disk; orange warning signals dead/broken folders). Offloads disk validation tasks to background threads to prevent UI lag.
 - **Alias Studio**: Register custom command shortcuts. Deactivate aliases cleanly by commenting them out in `~/.zshrc` without deleting them.
@@ -18,7 +48,7 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## Installation And Build
+## 📦 Installation Guide <a id="installation-guide"></a>
 
 ### Manual DMG Package (GitHub Releases)
 
@@ -40,32 +70,21 @@ sudo xattr -r -c /Applications/PathDeck.app
 
 Alternatively, open **System Settings > Privacy & Security**, scroll down to the Security section, and click **Open Anyway** (or hold `Control` while clicking the app in Finder and select **Open**).
 
----
-
 ### Build From Source
 
 PathDeck is built using pure Swift 5.10+ targeting macOS 14+. To compile and install locally:
 
-1. Clone this repository:
+```bash
+git clone https://github.com/AMFI-Disable/PathDeck.git
+cd PathDeck
+./scripts/build.sh
+```
 
-   ```bash
-   git clone https://github.com/AMFI-Disable/PathDeck.git
-   cd PathDeck
-   ```
-
-2. Build the application using the build script:
-
-   ```bash
-   ./scripts/build.sh
-   ```
-
-3. The built application bundle will be located at `./PathDeck.app`.
+The built application bundle will be located at `./PathDeck.app`.
 
 ---
 
-## Development And Test Commands
-
-### Run Unit Tests
+## 🧪 Automated Tests And Quality Assurance <a id="automated-tests-and-quality-assurance"></a>
 
 To run our test suites containing edge-case tokenizer parser and backup restoration validations:
 
@@ -73,26 +92,16 @@ To run our test suites containing edge-case tokenizer parser and backup restorat
 swift test
 ```
 
-### Clean Tree
+---
 
-Our `.gitignore` blocks build caches and output binaries from leaking into the remote tree. Ensure all compiled artifacts are kept locally:
+## 🛡️ Privacy And Security First <a id="privacy-and-security-first"></a>
 
-- `.build/`
-- `PathDeck.app/`
+- **Zero Telemetry**: No third-party network pings, tracking cookies, or diagnostic phoning home.
+- **Local-First Execution**: All shell profile reads, backups, and environment parses occur 100% locally on device.
+- **Biometric Security**: Sensitive environment variable values are locked behind Touch ID authentication.
 
 ---
 
-## Open-Source Contributions
+## 📄 License And Open Source <a id="license-and-open-source"></a>
 
-Contributions are welcome! Please follow these guidelines:
-
-- Fork the repository and create your feature branches off `main`.
-- Write accompanying unit tests under `tests/pathdecktests/` for parser engine modifications.
-- Ensure that the application memory footprint remains under 20MB.
-- Submit a Pull Request describing your changes.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [license](license) file for details.
+Licensed under the [MIT License](license). Copyright (c) 2026 AMFI-Disable.
