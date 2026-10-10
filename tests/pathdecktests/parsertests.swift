@@ -95,9 +95,9 @@ final class ParserTests: XCTestCase {
 
         // Verify token categories count matches our mock profile layout
         XCTAssertEqual(pathExports, 2, "Expected exactly 2 PATH modifications.")
-        XCTAssertEqual(aliases, 2, "Expected exactly 2 active aliases.")
+        XCTAssertEqual(aliases, 3, "Expected exactly 3 aliases (2 active + 1 deactivated).")
         XCTAssertEqual(envVars, 3, "Expected exactly 3 exported environment variables.")
-        XCTAssertEqual(comments, 9, "Expected exactly 9 comment lines (including inactive aliases starting with #).")
+        XCTAssertEqual(comments, 8, "Expected exactly 8 comment lines (the deactivated alias now tokenizes as a disabled alias, not a comment).")
         XCTAssertEqual(empties, 7, "Expected exactly 7 empty lines.")
         XCTAssertEqual(raws, 7, "Expected exactly 7 raw fallback lines (3 for homebrew if/then block, 4 for clean function).")
 
