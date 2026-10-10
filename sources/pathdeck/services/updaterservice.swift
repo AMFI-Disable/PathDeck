@@ -10,8 +10,8 @@ public final class UpdaterService {
     public var isChecking: Bool = false
     public var errorMessage: String?
 
-    // Default current version
-    public let currentVersion = "V1.1.1"
+    // Current version sourced from the centralized app version constant
+    public let currentVersion = AppVersion.current
 
     public init() {}
 

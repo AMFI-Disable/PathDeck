@@ -45,7 +45,7 @@ public struct SidebarView: View {
             // Standard Semantic Versioning UI reference display label
             HStack {
                 Spacer()
-                Text("V1.0.0")
+                Text(AppVersion.current)
                     .font(.caption2)
                     .foregroundColor(.secondary)
                     .padding(.vertical, 8)

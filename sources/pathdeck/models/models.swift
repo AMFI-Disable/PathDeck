@@ -57,6 +57,12 @@ public struct EnvVarItem: Identifiable, Equatable, Hashable {
     }
 }
 
+/// Canonical user-facing version identity for PathDeck Studio.
+/// Single source of truth referenced by the UI sidebar, the update checker, and release tooling.
+public enum AppVersion {
+    public static let current = "V1.0.1"
+}
+
 /// An AST representation of a single parsed line in the shell profile script.
 public enum ConfigLine: Identifiable, Equatable, Hashable {
     case pathExport(path: String, isPrepend: Bool, comment: String?)
