@@ -63,7 +63,13 @@ final class ParserTests: XCTestCase {
 
             case .alias(let name, let value, let isEnabled, let comment):
                 aliases += 1
-                XCTAssertTrue(isEnabled)
+                if name == "gp" {
+                    // Deactivated alias must survive parsing as a disabled entry, not a comment
+                    XCTAssertFalse(isEnabled)
+                    XCTAssertEqual(value, "git push")
+                } else {
+                    XCTAssertTrue(isEnabled)
+                }
                 if name == "gs" {
                     XCTAssertEqual(value, "git status")
                     XCTAssertEqual(comment, "Quick status check shortcut")
@@ -164,5 +170,37 @@ final class ParserTests: XCTestCase {
         // Ensure serialization matches input exactly
         let serialized = ShellConfigParser.serialize(lines)
         XCTAssertEqual(weirdConfig, serialized, "Edge cases round-trip must be character-perfect identical.")
+    }
+
+    /// Validates that a deactivated alias (commented-out line) round-trips to disk byte-for-byte
+    /// while remaining visible in parsed state as a disabled alias entry with its comment intact.
+    func testDisabledAliasRoundTrip() throws {
+        let originalText = """
+        # Active shortcut
+        alias gs="git status" # Quick status check shortcut
+
+        # Deactivated shortcut kept for reference
+        # alias gp="git push" # Legacy push helper
+        """
+
+        let parsedLines = ShellConfigParser.parse(contentsOf: originalText)
+
+        // Exactly one disabled alias must be tokenized out of the commented line
+        let disabledAliases = parsedLines.compactMap { line -> AliasItem? in
+            if case .alias(let name, let value, let isEnabled, let comment) = line,
+               !isEnabled {
+                return AliasItem(name: name, command: value, comment: comment, isEnabled: isEnabled)
+            }
+            return nil
+        }
+
+        XCTAssertEqual(disabledAliases.count, 1, "Expected exactly 1 deactivated alias token.")
+        XCTAssertEqual(disabledAliases.first?.name, "gp")
+        XCTAssertEqual(disabledAliases.first?.command, "git push")
+        XCTAssertEqual(disabledAliases.first?.comment, "Legacy push helper")
+
+        // Re-serializing must reproduce the original file character-for-character
+        let serializedText = ShellConfigParser.serialize(parsedLines)
+        XCTAssertEqual(originalText, serializedText, "Disabled alias round-trip is not byte-perfect.")
     }
 }
