@@ -17,7 +17,7 @@ PathDeck is a premium, native macOS developer studio designed to visually manage
 ## Grabbing the DMG from Releases
 Developers and end-users can download the pre-packaged `PathDeck.dmg` file from our project's **GitHub Releases** page:
 1. Navigate to the **Releases** section of the repository.
-2. Under the latest tag (e.g. `V1.0.0`), download the compiled `PathDeck.dmg` asset.
+2. Under the latest tag (e.g. `v1.0.1`), download the compiled `PathDeck.dmg` asset.
 3. Double-click the downloaded `PathDeck.dmg` to mount the disk image, and drag `PathDeck.app` into your local `Applications/` folder.
 
 ---
@@ -59,7 +59,7 @@ To compile and package the final release assets locally:
    ```bash
    ./scripts/build.sh
    ```
-2. The script compiles the package in production release mode (`-c release`), scaffolds standard bundle directories, injects `info.plist` (declaring bundle `com.amfi-disable.PathDeck` version `V1.1.1`), signs it locally using ad-hoc `codesign`, and packages the bundle into a compressed DMG disk image using `hdiutil`.
+2. The script compiles the package in production release mode (`-c release`), scaffolds standard bundle directories, injects `info.plist` (declaring bundle `com.amfi-disable.PathDeck` version `V1.0.1`), signs it locally using ad-hoc `codesign`, and packages the bundle into a compressed DMG disk image using `hdiutil`.
 3. Locate the compiled outputs in the project root:
    - Standalone app: `./PathDeck.app`
    - Compressed installer: `./PathDeck.dmg`
