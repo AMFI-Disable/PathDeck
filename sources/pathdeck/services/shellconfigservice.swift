@@ -29,12 +29,22 @@ public final class ShellConfigService {
         }
     }
 
-    /// Checks for the presence of ~/.zshrc or falls back.
-    public func locateActiveProfile() {
+    /// Checks for the presence of ~/.zshrc, falling back to ~/.bash_profile when
+    /// no zsh configuration exists, and defaults to ~/.zshrc for fresh machines.
+    /// - Parameter homeDirectory: Overrides the user's home directory for isolated testing.
+    public func locateActiveProfile(homeDirectory: URL? = nil) {
         let fileManager = FileManager.default
-        let homeDir = fileManager.homeDirectoryForCurrentUser
+        let homeDir = homeDirectory ?? fileManager.homeDirectoryForCurrentUser
         let zshrcURL = homeDir.appendingPathComponent(".zshrc")
-        self.activeFileURL = zshrcURL
+        let bashProfileURL = homeDir.appendingPathComponent(".bash_profile")
+
+        if fileManager.fileExists(atPath: zshrcURL.path) {
+            self.activeFileURL = zshrcURL
+        } else if fileManager.fileExists(atPath: bashProfileURL.path) {
+            self.activeFileURL = bashProfileURL
+        } else {
+            self.activeFileURL = zshrcURL
+        }
     }
 
     /// Asynchronously parses target profile from disk inside try-catch bounds.
