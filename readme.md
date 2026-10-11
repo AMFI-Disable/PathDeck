@@ -15,6 +15,10 @@
 
 </div>
 
+> [!NOTE]
+> **Project Archived & Sunset Notice**
+> PathDeck has reached end-of-life and is officially archived. The final standalone release is [v1.0.1](https://github.com/AMFI-Disable/PathDeck/releases/tag/v1.0.1). The repository remains available in read-only mode for historical reference. See the [farewell changelog](changelog.md) for final release notes. No further updates, issues, or pull requests will be accepted.
+
 ---
 
 ## 🧭 Table Of Contents
