@@ -14,7 +14,7 @@ PathDeck is a premium, native macOS developer studio designed to visually manage
 
 ---
 
-## Grabbing the DMG from Releases
+## Grabbing The DMG From Releases
 Developers and end-users can download the pre-packaged `PathDeck.dmg` file from our project's **GitHub Releases** page:
 1. Navigate to the **Releases** section of the repository.
 2. Under the latest tag (e.g. `v1.0.1`), download the compiled `PathDeck.dmg` asset.
