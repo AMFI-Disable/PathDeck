@@ -1,10 +1,10 @@
-# Contributing to PathDeck
+# Contributing To PathDeck
 
 Thank you for your interest in contributing to PathDeck! We welcome community contributions to help improve this visual macOS developer studio.
 
 ---
 
-## How to Contribute
+## How To Contribute
 
 ### 1. Reporting Bugs
 - Please search existing issues to see if the bug has already been reported.
