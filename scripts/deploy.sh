@@ -30,7 +30,7 @@ git commit -m "feat: release pathdeck app" || echo "Nothing new to commit."
 # 5. Tag release with v1.1.1
 echo "Creating annotated release tag v1.1.1..."
 git tag -d v1.1.1 2>/dev/null || true
-git tag -a v1.1.1 -m "release: ship production version"
+git tag -a v1.1.1 -m "chore: ship production version"
 
 # 6. Push to remote origin
 echo "Pushing branch main and tags to remote origin..."
