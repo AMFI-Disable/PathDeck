@@ -4,7 +4,7 @@ PathDeck is a premium, native macOS developer studio designed to visually manage
 
 ---
 
-## Technical Specifications & Features
+## Technical Specifications And Features
 
 - **PATH Stack Studio**: Drag-and-drop to prioritize search pathways with visual status dot indicators (Green checkmark denotes folders that exist; orange/red warning signals dead/broken folders).
 - **Alias Studio**: Edit shortcuts, search triggering keywords, and easily toggle shortcuts to comment them out of files without deleting them.
@@ -15,44 +15,51 @@ PathDeck is a premium, native macOS developer studio designed to visually manage
 ---
 
 ## Grabbing The DMG From Releases
-Developers and end-users can download the pre-packaged `PathDeck.dmg` file from our project's **GitHub Releases** page:
+
+Developers and end-users can download the pre-packaged `.dmg` file from our project's **GitHub Releases** portal (`https://github.com/AMFI-Disable/PathDeck/releases`):
+
 1. Navigate to the **Releases** section of the repository.
-2. Under the latest tag (e.g. `v1.0.1`), download the compiled `PathDeck.dmg` asset.
-3. Double-click the downloaded `PathDeck.dmg` to mount the disk image, and drag `PathDeck.app` into your local `Applications/` folder.
+2. Under the latest tag (e.g. `v1.0.1`), download the compiled `pathdeck-1.0.1.dmg` asset.
+3. Verify the cryptographic SHA-256 checksum against GitHub Releases:
+   ```bash
+   shasum -a 256 pathdeck-1.0.1.dmg
+   ```
+4. Double-click the downloaded disk image to mount it, and drag `PathDeck.app` into your local `/Applications` folder.
 
 ---
 
-## Bypassing Apple Gatekeeper Warnings
+## macOS Gatekeeper Clearance (Unnotarized Open-Source Build)
 
-Since PathDeck is compiled locally and distributed without Apple Developer notarization signatures, macOS Gatekeeper may present one of two warning blocks upon launch:
-1. **"PathDeck.app cannot be opened because it is from an unidentified developer."**
-2. **"PathDeck.app is damaged and cannot be opened. You should move it to the Trash."** (Typically happens to ad-hoc codesigned binaries moved across directory paths or quarantine flags).
+Because PathDeck is an open-source build provided without a paid Apple Developer ID certificate ($99/year), macOS Gatekeeper quarantines downloaded application bundles by default on first launch.
 
-### Method 1: The Right-Click Open Sequence
-1. Locate `PathDeck.app` inside Finder (or your `Applications/` directory).
+### Method 1: Stripping Extended Attributes (Terminal)
+
+To clear the quarantine attribute via Terminal:
+
+```bash
+sudo xattr -r -c /Applications/PathDeck.app
+```
+
+*(For example, if testing directly from the workspace build folder)*:
+
+```bash
+xattr -cr ./PathDeck.app
+```
+
+### Method 2: System Settings Open Anyway (GUI)
+
+Open **System Settings > Privacy & Security**, scroll down to the Security section, and click **Open Anyway**.
+
+### Method 3: The Right-Click Open Sequence
+
+1. Locate `PathDeck.app` inside Finder (or your `/Applications` directory).
 2. Control-click (or right-click) the application icon and select **Open** from the shortcut context menu.
 3. In the security confirmation sheet pop-up, click **Open** again to authorize launch.
 4. macOS will register a security override, permitting direct launches henceforth.
 
-### Method 2: Stripping Extended Attributes (Recommended)
-If macOS flags the application as "damaged" due to quarantine policies, strip the metadata attributes using the terminal:
-1. Open the Terminal application.
-2. Execute the following recursive attribute removal command:
-   ```bash
-   xattr -cr /Applications/PathDeck.app
-   ```
-   *(For example, if the app is run directly from the workspace build folder)*:
-   ```bash
-   xattr -cr ./PathDeck.app
-   ```
-3. Re-run or launch the application:
-   ```bash
-   open ./PathDeck.app
-   ```
-
 ---
 
-## Automated Compilation & Build Pipeline
+## Automated Compilation And Build Pipeline
 To compile and package the final release assets locally:
 
 1. Run the build script in the project root:
