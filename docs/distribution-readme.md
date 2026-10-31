@@ -21,9 +21,11 @@ Developers and end-users can download the pre-packaged `.dmg` file from our proj
 1. Navigate to the **Releases** section of the repository.
 2. Under the latest tag (e.g. `v1.0.1`), download the compiled `pathdeck-1.0.1.dmg` asset.
 3. Verify the cryptographic SHA-256 checksum against GitHub Releases:
+
    ```bash
    shasum -a 256 pathdeck-1.0.1.dmg
    ```
+
 4. Double-click the downloaded disk image to mount it, and drag `PathDeck.app` into your local `/Applications` folder.
 
 ---
@@ -60,12 +62,15 @@ Open **System Settings > Privacy & Security**, scroll down to the Security secti
 ---
 
 ## Automated Compilation And Build Pipeline
+
 To compile and package the final release assets locally:
 
 1. Run the build script in the project root:
+
    ```bash
    ./scripts/build.sh
    ```
+
 2. The script compiles the package in production release mode (`-c release`), scaffolds standard bundle directories, injects `info.plist` (declaring bundle `com.amfi-disable.PathDeck` version `V1.0.1`), signs it locally using ad-hoc `codesign`, and packages the bundle into a compressed DMG disk image using `hdiutil`.
 3. Locate the compiled outputs in the project root:
    - Standalone app: `./PathDeck.app`
