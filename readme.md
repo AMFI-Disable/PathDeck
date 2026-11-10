@@ -7,7 +7,7 @@
 
 [![Platform: macOS Sonoma+](https://img.shields.io/badge/Platform-macOS%2014%2B%20(Sonoma%20%2F%20Sequoia)-blue.svg?style=flat-square&logo=apple)](https://apple.com)
 [![Swift: 5.10+](https://img.shields.io/badge/Swift-5.10%2B-orange.svg?style=flat-square&logo=swift)](https://swift.org)
-[![Status: Archived](https://img.shields.io/badge/Status-Archived%20%2F%20Read--Only-inactive.svg?style=flat-square)](https://github.com/AMFI-Disable/PathDeck)
+[![Status: Active](https://img.shields.io/badge/Status-Active-success.svg?style=flat-square)](https://github.com/AMFI-Disable/PathDeck)
 [![Release: v1.0.1](https://img.shields.io/badge/Release-v1.0.1-blue.svg?style=flat-square&logo=github)](https://github.com/AMFI-Disable/PathDeck/releases)
 [![Tests: Passing](https://img.shields.io/badge/Tests-Passing%20(100%25)-success.svg?style=flat-square&logo=checkmarx)](#automated-tests-and-quality-assurance)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](license)
@@ -15,12 +15,6 @@
 [![Privacy: Zero Telemetry](https://img.shields.io/badge/Privacy-Zero%20Telemetry%20%2F%20100%25%20Local-purple.svg?style=flat-square)](#privacy-and-security-first)
 
 </div>
-
-> [!NOTE]
-> **Project Archived & Sunset Notice**
-> PathDeck has reached end-of-life and is officially archived. The final standalone release is [v1.0.1](https://github.com/AMFI-Disable/PathDeck/releases/tag/v1.0.1). The repository remains available in read-only mode for historical reference. See the [farewell changelog](changelog.md) for final release notes. No further updates, issues, or pull requests will be accepted.
-
----
 
 ## 🧭 Table Of Contents
 
