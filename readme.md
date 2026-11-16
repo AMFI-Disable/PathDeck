@@ -1,6 +1,6 @@
-# 🧭 PathDeck
-
 <div align="center">
+
+# PathDeck
 
 **The Modern Native macOS Developer Studio For Shell Environment Management**  
 *Lightning-fast, native SwiftUI GUI companion for visual PATH prioritization, alias studio, and zero-loss backup restores.*
@@ -16,7 +16,7 @@
 
 </div>
 
-## 🧭 Table Of Contents
+## Table Of Contents
 
 - [Overview & Core Value](#overview-and-core-value)
 - [Key Features](#key-features)
@@ -27,7 +27,7 @@
 
 ---
 
-## ⚡ Overview And Core Value <a id="overview-and-core-value"></a>
+## Overview And Core Value <a id="overview-and-core-value"></a>
 
 > **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
 
@@ -37,7 +37,7 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## 🚀 Key Features <a id="key-features"></a>
+## Key Features <a id="key-features"></a>
 
 - **PATH Stack Studio**: Drag-and-drop to prioritize search pathways with visual status dot indicators (Green checkmark denotes folders that exist on disk; orange warning signals dead/broken folders). Offloads disk validation tasks to background threads to prevent UI lag.
 - **Alias Studio**: Register custom command shortcuts. Deactivate aliases cleanly by commenting them out in `~/.zshrc` without deleting them.
@@ -47,7 +47,7 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ---
 
-## 📦 Installation Guide <a id="installation-guide"></a>
+## Installation Guide <a id="installation-guide"></a>
 
 ### Manual DMG Package (GitHub Releases)
 
@@ -83,7 +83,7 @@ The built application bundle will be located at `./PathDeck.app`.
 
 ---
 
-## 🧪 Automated Tests And Quality Assurance <a id="automated-tests-and-quality-assurance"></a>
+## Automated Tests And Quality Assurance <a id="automated-tests-and-quality-assurance"></a>
 
 To run our test suites containing edge-case tokenizer parser and backup restoration validations:
 
@@ -93,7 +93,7 @@ swift test
 
 ---
 
-## 🛡️ Privacy And Security First <a id="privacy-and-security-first"></a>
+## Privacy And Security First <a id="privacy-and-security-first"></a>
 
 - **Zero Telemetry**: No third-party network pings, tracking cookies, or diagnostic phoning home.
 - **Local-First Execution**: All shell profile reads, backups, and environment parses occur 100% locally on device.
@@ -101,6 +101,6 @@ swift test
 
 ---
 
-## 📄 License And Open Source <a id="license-and-open-source"></a>
+## License And Open Source <a id="license-and-open-source"></a>
 
 Licensed under the [MIT License](license). Copyright (c) 2026 AMFI-Disable.
