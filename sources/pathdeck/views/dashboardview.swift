@@ -40,7 +40,7 @@ public struct DashboardView: View {
                                 .foregroundColor(.secondary)
 
                             Button(action: {
-                                if let url = URL(string: "https://github.com/amfi-disable/PathDeck/releases/latest") {
+                                if let url = URL(string: "https://github.com/AMFI-Disable/PathDeck/releases/latest") {
                                     NSWorkspace.shared.open(url)
                                 }
                             }) {
