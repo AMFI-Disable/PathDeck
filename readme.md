@@ -5,6 +5,7 @@
 **The Modern Native macOS Developer Studio For Shell Environment Management**  
 *Lightning-fast, native SwiftUI GUI companion for visual PATH prioritization, alias studio, and zero-loss backup restores.*
 
+[![Website: Live](https://img.shields.io/badge/Website-Live-2EA3F2.svg?style=flat-square)](https://amfi-disable.github.io/PathDeck/)
 [![Platform: macOS Sonoma+](https://img.shields.io/badge/Platform-macOS%2014%2B%20(Sonoma%20%2F%20Sequoia)-blue.svg?style=flat-square&logo=apple)](https://apple.com)
 [![Swift: 5.10+](https://img.shields.io/badge/Swift-5.10%2B-orange.svg?style=flat-square&logo=swift)](https://swift.org)
 [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg?style=flat-square)](https://github.com/AMFI-Disable/PathDeck)
