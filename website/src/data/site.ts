@@ -59,5 +59,24 @@ export const siteConfig = {
     "macOS 14.0+ (Sonoma / Sequoia)",
     "Swift 5.10+",
     "100% local, zero telemetry"
+  ],
+  "hubName": "AMFI Studio",
+  "hubHash": "studio",
+  "previewTabs": [
+    {
+      "tab": "PATH Stack",
+      "title": "Visual Priority Order",
+      "body": "Drag-and-drop ~/.zshrc and ~/.bash_profile PATH entries with live green/orange disk validation."
+    },
+    {
+      "tab": "Alias Studio",
+      "title": "Non-Destructive Toggles",
+      "body": "Enable or comment out custom shell aliases cleanly without deleting your definitions."
+    },
+    {
+      "tab": "Touch ID Vault",
+      "title": "Biometric Secret Masking",
+      "body": "Masks sensitive API keys in-memory as bullets and requires Touch ID verification per row."
+    }
   ]
 } as const;
