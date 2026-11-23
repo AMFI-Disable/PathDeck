@@ -21,6 +21,18 @@
 
 ---
 
+## Star History
+
+<a href="https://www.star-history.com/?type=date&repos=amfi-disable%2Fpathdeck">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=amfi-disable%2Fpathdeck&type=date&theme=dark&legend=top-left" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=amfi-disable%2Fpathdeck&type=date&legend=top-left" />
+    <img alt="AMFI-Disable/PathDeck Star History Chart" src="https://api.star-history.com/chart?repos=amfi-disable%2Fpathdeck&type=date&legend=top-left" />
+  </picture>
+</a>
+
+---
+
 ## Overview And Core Value <a id="overview-and-core-value"></a>
 
 > **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
@@ -98,15 +110,3 @@ swift test
 ## License And Open Source <a id="license-and-open-source"></a>
 
 Licensed under the [MIT License](license). Copyright (c) 2026 AMFI-Disable.
-
----
-
-## Star History
-
-<a href="https://www.star-history.com/#AMFI-Disable/PathDeck&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=AMFI-Disable/PathDeck&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=AMFI-Disable/PathDeck&type=Date" />
-    <img alt="AMFI-Disable/PathDeck Star History Chart" src="https://api.star-history.com/svg?repos=AMFI-Disable/PathDeck&type=Date" />
-  </picture>
-</a>
