@@ -8,6 +8,7 @@ All notable changes, features, and release history for PathDeck Studio are docum
 
 ### Changed
 
+- Restored the Star History chart section and links in `readme.md` and `website/src/main.ts`.
 - Restored active project maintenance status and badges in `readme.md`, removing repository archival and sunset notices.
 - Reinstated active security policy guidelines and private vulnerability reporting workflows in `security.md`.
 
