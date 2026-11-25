@@ -77,25 +77,29 @@ public struct AliasStudioView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Add New Shortcut")
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 HStack(spacing: 12) {
                     TextField("Name (e.g. gs)", text: $newName)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 140)
+                        .onSubmit(addNewAlias)
 
                     TextField("Target Command (e.g. git status)", text: $newCommand)
                         .textFieldStyle(.roundedBorder)
+                        .onSubmit(addNewAlias)
 
                     TextField("Comment (optional)", text: $newComment)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 180)
+                        .onSubmit(addNewAlias)
 
                     Button(action: addNewAlias) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Add Alias")
                     .disabled(newName.isEmpty || newCommand.isEmpty)
                 }
             }
@@ -108,15 +112,16 @@ public struct AliasStudioView: View {
             if let errorMessage = errorMessage {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                     Text(errorMessage)
                         .font(.callout)
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                     Spacer()
                     Button(action: { self.errorMessage = nil }) {
                         Image(systemName: "xmark")
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Dismiss Error")
                 }
                 .padding()
                 .background(Color.red.opacity(0.1))
@@ -126,64 +131,94 @@ public struct AliasStudioView: View {
             // Search Bar
             HStack {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 TextField("Search aliases by name or command...", text: $searchText)
                     .textFieldStyle(.plain)
                 if !searchText.isEmpty {
                     Button(action: { searchText = "" }) {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Clear Search")
                 }
             }
             .padding(8)
             .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
-            .cornerRadius(6)
+            .clipShape(.rect(cornerRadius: 6))
             .padding([.horizontal, .top])
 
             // Aliases list
-            List {
-                ForEach(filteredAliases) { $item in
-                    HStack(spacing: 16) {
-                        // Status light
-                        Circle()
-                            .fill(item.isEnabled ? Color.blue : Color.gray)
-                            .frame(width: 8, height: 8)
+            if filteredAliases.wrappedValue.isEmpty {
+                if searchText.isEmpty {
+                    ContentUnavailableView(
+                        "No Aliases Configured",
+                        systemImage: "terminal",
+                        description: Text("Add a shell shortcut above to get started.")
+                    )
+                } else {
+                    ContentUnavailableView.search(text: searchText)
+                }
+            } else {
+                List {
+                    ForEach(filteredAliases) { $item in
+                        HStack(spacing: 16) {
+                            Circle()
+                                .fill(item.isEnabled ? Color.blue : Color.gray)
+                                .frame(width: 8, height: 8)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                                Text(item.name)
-                                    .font(.headline)
-                                    .foregroundColor(item.isEnabled ? .primary : .secondary)
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                    Text(item.name)
+                                        .font(.headline)
+                                        .foregroundStyle(item.isEnabled ? .primary : .secondary)
 
-                                Text("→")
-                                    .foregroundColor(.secondary)
+                                    Text("→")
+                                        .foregroundStyle(.secondary)
 
-                                Text(item.command)
-                                    .font(.system(.body, design: .monospaced))
-                                    .foregroundColor(item.isEnabled ? .primary : .secondary)
+                                    Text(item.command)
+                                        .font(.system(.body, design: .monospaced))
+                                        .foregroundStyle(item.isEnabled ? .primary : .secondary)
+                                }
+
+                                if let comment = item.comment, !comment.isEmpty {
+                                    Text("# \(comment)")
+                                        .font(.caption)
+                                        .italic()
+                                        .foregroundStyle(.secondary)
+                                }
                             }
 
-                            if let comment = item.comment, !comment.isEmpty {
-                                Text("# \(comment)")
-                                    .font(.caption)
-                                    .italic()
-                                    .foregroundColor(.secondary)
+                            Spacer()
+
+                            Toggle("Enable alias \(item.name)", isOn: $item.isEnabled)
+                                .toggleStyle(.switch)
+                                .labelsHidden()
+
+                            Button(role: .destructive) {
+                                service.aliases.removeAll { $0.id == item.id }
+                            } label: {
+                                Image(systemName: "trash")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Delete alias \(item.name)")
+                        }
+                        .padding(.vertical, 4)
+                        .contextMenu {
+                            Button("Copy Command") {
+                                NSPasteboard.general.clearContents()
+                                NSPasteboard.general.setString(item.command, forType: .string)
+                            }
+                            Button("Delete Alias", role: .destructive) {
+                                service.aliases.removeAll { $0.id == item.id }
                             }
                         }
-
-                        Spacer()
-
-                        Toggle("", isOn: $item.isEnabled)
-                            .toggleStyle(.switch)
-                            .labelsHidden()
                     }
-                    .padding(.vertical, 4)
+                    .onDelete(perform: deleteAlias)
                 }
-                .onDelete(perform: deleteAlias)
+                .listStyle(.inset)
             }
-            .listStyle(.inset)
 
             // Footer Info
             HStack {
@@ -207,6 +242,11 @@ public struct AliasStudioView: View {
         let comment = newComment.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !name.isEmpty, !cmd.isEmpty else { return }
+        guard ShellConfigParser.isValidAliasName(name) else {
+            errorMessage = "Invalid alias name '\(name)'. Use letters, numbers, '.', '-', or '_' without spaces."
+            return
+        }
+        errorMessage = nil
 
         let newItem = AliasItem(
             name: name,
@@ -224,7 +264,11 @@ public struct AliasStudioView: View {
     }
 
     private func deleteAlias(at offsets: IndexSet) {
-        service.aliases.remove(atOffsets: offsets)
+        let items = filteredAliases.wrappedValue
+        let idsToDelete = Set(offsets.compactMap { idx in
+            items.indices.contains(idx) ? items[idx].id : nil
+        })
+        service.aliases.removeAll { idsToDelete.contains($0.id) }
     }
 
     private func saveAliases() {

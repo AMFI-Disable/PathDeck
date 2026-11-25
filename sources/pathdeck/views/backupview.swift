@@ -78,33 +78,18 @@ public struct BackupView: View {
 
             // Backups List
             if backups.isEmpty {
-                VStack(spacing: 20) {
-                    Spacer()
-                    Image(systemName: "clock.arrow.circlepath")
-                        .font(.system(size: 64))
-                        .foregroundColor(.secondary)
-
-                    Text("No Restore Points Found")
-                        .font(.title2)
-                        .bold()
-                        .foregroundColor(.primary)
-
-                    Text("Every time you save modifications to ~/.zshrc or environment variables, a safe timestamped copy will automatically appear here.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: 360)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                ContentUnavailableView(
+                    "No Restore Points Found",
+                    systemImage: "clock.arrow.circlepath",
+                    description: Text("Every time you save modifications to \(service.activeProfileDisplayPath) or environment variables, a safe timestamped copy will automatically appear here.")
+                )
             } else {
                 List {
                     ForEach(backups) { backup in
                         HStack(spacing: 16) {
                             Image(systemName: "doc.text.fill")
                                 .font(.title)
-                                .foregroundColor(.blue)
+                                .foregroundStyle(.blue)
 
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(backup.filename)
@@ -112,12 +97,12 @@ public struct BackupView: View {
                                     .fontWeight(.medium)
 
                                 HStack(spacing: 12) {
-                                    Text(formatDate(backup.timestamp))
+                                    Text(backup.timestamp, format: .dateTime.year().month().day().hour().minute().second())
                                     Text("•")
-                                    Text(formatFileSize(backup.fileSize))
+                                    Text(backup.fileSize, format: .byteCount(style: .file))
                                 }
                                 .font(.caption)
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                             }
 
                             Spacer()

@@ -25,6 +25,7 @@ final class PathDeckTests: XCTestCase {
 
     /// Validates that active profile detection prefers ~/.zshrc, honors ~/.bash_profile
     /// as documented, and defaults to ~/.zshrc on machines with neither file.
+    @MainActor
     func testActiveProfileFallbackResolution() throws {
         let fileManager = FileManager.default
         let mockHome = fileManager.temporaryDirectory

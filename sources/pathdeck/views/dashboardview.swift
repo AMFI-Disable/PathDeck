@@ -3,7 +3,7 @@ import SwiftUI
 /// DashboardView displays real-time health diagnostics, PATH folder verification checklist, and system load stats.
 public struct DashboardView: View {
     @Environment(ShellConfigService.self) private var service
-    @State private var updater = UpdaterService()
+    @Environment(UpdaterService.self) private var updater
 
     public init() {}
 

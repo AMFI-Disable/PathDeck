@@ -69,6 +69,7 @@ public enum AppVersion {
 /// An AST representation of a single parsed line in the shell profile script.
 public enum ConfigLine: Identifiable, Equatable, Hashable {
     case pathExport(path: String, isPrepend: Bool, comment: String?)
+    case disabledPathExport(path: String, isPrepend: Bool, comment: String?)
     case alias(name: String, value: String, isEnabled: Bool, comment: String?)
     case envVar(name: String, value: String, isSensitive: Bool, comment: String?)
     case comment(text: String)
@@ -80,6 +81,8 @@ public enum ConfigLine: Identifiable, Equatable, Hashable {
         switch self {
         case .pathExport(let path, let isPrepend, let comment):
             return "path-\(path)-\(isPrepend)-\(comment ?? "")"
+        case .disabledPathExport(let path, let isPrepend, let comment):
+            return "disabled-path-\(path)-\(isPrepend)-\(comment ?? "")"
         case .alias(let name, let value, let isEnabled, let comment):
             return "alias-\(name)-\(value)-\(isEnabled)-\(comment ?? "")"
         case .envVar(let name, let value, let isSensitive, let comment):
@@ -91,5 +94,22 @@ public enum ConfigLine: Identifiable, Equatable, Hashable {
         case .raw(let content):
             return "raw-\(content)"
         }
+    }
+}
+
+/// Supported shell configuration profile files.
+public struct ShellProfile: Identifiable, Equatable, Hashable {
+    public let url: URL
+    public let name: String
+    public let exists: Bool
+
+    public var id: String { url.path }
+
+    public var displayPath: String {
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        if url.path.hasPrefix(home) {
+            return "~" + url.path.dropFirst(home.count)
+        }
+        return url.path
     }
 }

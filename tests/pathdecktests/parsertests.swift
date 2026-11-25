@@ -61,6 +61,9 @@ final class ParserTests: XCTestCase {
                     XCTAssertNil(comment)
                 }
 
+            case .disabledPathExport:
+                break
+
             case .alias(let name, let value, let isEnabled, let comment):
                 aliases += 1
                 if name == "gp" {

@@ -25,9 +25,14 @@ public struct EnvVarView: View {
                     return service.envVars
                 } else {
                     let query = searchText.lowercased()
-                    return service.envVars.filter {
-                        $0.key.lowercased().contains(query) ||
-                        $0.value.lowercased().contains(query)
+                    return service.envVars.filter { item in
+                        if item.key.lowercased().contains(query) {
+                            return true
+                        }
+                        if !item.isSensitive || unlockedIds.contains(item.id) {
+                            return item.value.lowercased().contains(query)
+                        }
+                        return false
                     }
                 }
             },
@@ -76,15 +81,23 @@ public struct EnvVarView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Add Environment Variable")
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 HStack(spacing: 12) {
                     TextField("Name (e.g. API_KEY)", text: $newKey)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 180)
+                        .onSubmit(addNewVariable)
 
-                    TextField("Value", text: $newValue)
-                        .textFieldStyle(.roundedBorder)
+                    Group {
+                        if newIsSensitive {
+                            SecureField("Secret Value", text: $newValue)
+                        } else {
+                            TextField("Value", text: $newValue)
+                        }
+                    }
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(addNewVariable)
 
                     Toggle(isOn: $newIsSensitive) {
                         Label("Sensitive", systemImage: "lock.shield")
@@ -96,6 +109,7 @@ public struct EnvVarView: View {
                             .font(.title2)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Add Environment Variable")
                     .disabled(newKey.isEmpty || newValue.isEmpty)
                 }
             }
@@ -108,15 +122,16 @@ public struct EnvVarView: View {
             if let errorMessage = errorMessage {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                     Text(errorMessage)
                         .font(.callout)
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                     Spacer()
                     Button(action: { self.errorMessage = nil }) {
                         Image(systemName: "xmark")
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Dismiss Error")
                 }
                 .padding()
                 .background(Color.red.opacity(0.1))
@@ -126,76 +141,113 @@ public struct EnvVarView: View {
             // Search field
             HStack {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 TextField("Search variables by name...", text: $searchText)
                     .textFieldStyle(.plain)
                 if !searchText.isEmpty {
                     Button(action: { searchText = "" }) {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Clear Search")
                 }
             }
             .padding(8)
             .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
-            .cornerRadius(6)
+            .clipShape(.rect(cornerRadius: 6))
             .padding([.horizontal, .top])
 
             // Variables List
-            List {
-                ForEach(filteredVariables) { $item in
-                    HStack(spacing: 16) {
-                        if item.isSensitive {
-                            Image(systemName: unlockedIds.contains(item.id) ? "lock.open.fill" : "lock.fill")
-                                .foregroundColor(unlockedIds.contains(item.id) ? .green : .orange)
-                                .font(.system(size: 14))
-                                .frame(width: 16)
-                                .onTapGesture {
+            if filteredVariables.wrappedValue.isEmpty {
+                if searchText.isEmpty {
+                    ContentUnavailableView(
+                        "No Environment Variables",
+                        systemImage: "lock.shield",
+                        description: Text("Add an environment variable above to manage keys and exports.")
+                    )
+                } else {
+                    ContentUnavailableView.search(text: searchText)
+                }
+            } else {
+                List {
+                    ForEach(filteredVariables) { $item in
+                        HStack(spacing: 16) {
+                            if item.isSensitive {
+                                Button {
                                     didTapSecureField(for: item)
+                                } label: {
+                                    Image(systemName: unlockedIds.contains(item.id) ? "lock.open.fill" : "lock.fill")
+                                        .foregroundStyle(unlockedIds.contains(item.id) ? .green : .orange)
+                                        .font(.system(size: 14))
+                                        .frame(width: 16)
                                 }
-                        } else {
-                            Image(systemName: "capsule")
-                                .foregroundColor(.secondary)
-                                .font(.system(size: 10))
-                                .frame(width: 16)
-                        }
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(item.key)
-                                .font(.headline)
-                                .fontWeight(.medium)
-
-                            if item.isSensitive && !unlockedIds.contains(item.id) {
-                                Text("••••••••")
-                                    .font(.system(.body, design: .monospaced))
-                                    .foregroundColor(.secondary)
-                                    .onTapGesture {
-                                        didTapSecureField(for: item)
-                                    }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(unlockedIds.contains(item.id) ? "Lock \(item.key)" : "Unlock \(item.key)")
                             } else {
-                                Text(item.value)
-                                    .font(.system(.body, design: .monospaced))
-                                    .foregroundColor(.primary)
+                                Image(systemName: "capsule")
+                                    .foregroundStyle(.secondary)
+                                    .font(.system(size: 10))
+                                    .frame(width: 16)
+                            }
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(item.key)
+                                    .font(.headline)
+                                    .fontWeight(.medium)
+
+                                if item.isSensitive && !unlockedIds.contains(item.id) {
+                                    Button {
+                                        didTapSecureField(for: item)
+                                    } label: {
+                                        Text("••••••••")
+                                            .font(.system(.body, design: .monospaced))
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .accessibilityLabel("Reveal secret for \(item.key)")
+                                } else {
+                                    Text(item.value)
+                                        .font(.system(.body, design: .monospaced))
+                                        .foregroundStyle(.primary)
+                                }
+                            }
+
+                            Spacer()
+
+                            Toggle("Protect \(item.key) with biometrics", isOn: $item.isSensitive)
+                                .toggleStyle(.switch)
+                                .labelsHidden()
+
+                            Button(role: .destructive) {
+                                service.envVars.removeAll { $0.id == item.id }
+                            } label: {
+                                Image(systemName: "trash")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Delete variable \(item.key)")
+                        }
+                        .padding(.vertical, 6)
+                        .contextMenu {
+                            if !item.isSensitive || unlockedIds.contains(item.id) {
+                                Button("Copy Value") {
+                                    NSPasteboard.general.clearContents()
+                                    NSPasteboard.general.setString(item.value, forType: .string)
+                                }
+                            }
+                            Button("Delete Variable", role: .destructive) {
+                                service.envVars.removeAll { $0.id == item.id }
                             }
                         }
-
-                        Spacer()
-
-                        // Masking toggle
-                        Toggle("", isOn: $item.isSensitive)
-                            .toggleStyle(.switch)
-                            .labelsHidden()
+                        .onDisappear {
+                            unlockedIds.remove(item.id)
+                        }
                     }
-                    .padding(.vertical, 6)
-                    .onDisappear {
-                        // Re-lock the secret variable row securely when it leaves the screen
-                        unlockedIds.remove(item.id)
-                    }
+                    .onDelete(perform: deleteVariable)
                 }
-                .onDelete(perform: deleteVariable)
+                .listStyle(.inset)
             }
-            .listStyle(.inset)
 
             // Footer Info
             HStack {
@@ -211,6 +263,9 @@ public struct EnvVarView: View {
             .padding(.vertical, 8)
             .background(Color(NSColor.windowBackgroundColor).opacity(0.4))
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didResignActiveNotification)) { _ in
+            unlockedIds.removeAll()
+        }
     }
 
     private func addNewVariable() {
@@ -218,6 +273,11 @@ public struct EnvVarView: View {
         let val = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !key.isEmpty, !val.isEmpty else { return }
+        guard ShellConfigParser.isValidEnvVarKey(key) else {
+            errorMessage = "Invalid variable key '\(key)'. Start with a letter or '_' and use only letters, numbers, or '_'."
+            return
+        }
+        errorMessage = nil
 
         let newItem = EnvVarItem(
             key: key,
@@ -234,7 +294,11 @@ public struct EnvVarView: View {
     }
 
     private func deleteVariable(at offsets: IndexSet) {
-        service.envVars.remove(atOffsets: offsets)
+        let items = filteredVariables.wrappedValue
+        let idsToDelete = Set(offsets.compactMap { idx in
+            items.indices.contains(idx) ? items[idx].id : nil
+        })
+        service.envVars.removeAll { idsToDelete.contains($0.id) }
     }
 
     /// Biometric credential unlock action hook calling local authentication asynchronously.

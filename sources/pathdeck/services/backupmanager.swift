@@ -22,6 +22,13 @@ public final class BackupManager {
 
     private let backupsDirectory: URL
 
+    private static let timestampFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter
+    }()
+
     /// Initializes BackupManager.
     /// - Parameter backupsDirectory: Custom backup URL to isolate tests, defaults to ~/Library/Application Support/PathDeck/backups/
     public init(backupsDirectory: URL? = nil) {
@@ -45,9 +52,14 @@ public final class BackupManager {
     public func createBackup(for fileURL: URL) async throws -> URL {
         let fileManager = FileManager.default
 
-        // 1. Create backups directory if not exists
+        // 1. Create backups directory if not exists with owner-only permissions (0o700)
         do {
-            try fileManager.createDirectory(at: backupsDirectory, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(
+                at: backupsDirectory,
+                withIntermediateDirectories: true,
+                attributes: [.posixPermissions: 0o700]
+            )
+            try? fileManager.setAttributes([.posixPermissions: 0o700], ofItemAtPath: backupsDirectory.path)
         } catch {
             throw NSError(
                 domain: "PathDeck.BackupManager",
@@ -56,17 +68,19 @@ public final class BackupManager {
             )
         }
 
-        // 2. Form timestamped backup name (e.g., .zshrc_backup_20260708_143022)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd_HHmmss"
-        let timestamp = formatter.string(from: Date())
-
+        // 2. Form collision-safe timestamped backup name (e.g., .zshrc_backup_20260708_143022)
+        let timestamp = Self.timestampFormatter.string(from: Date())
         let originalName = fileURL.lastPathComponent
-        let backupFileName = "\(originalName)_backup_\(timestamp)"
-        let backupURL = backupsDirectory.appendingPathComponent(backupFileName)
+        var backupURL = backupsDirectory.appendingPathComponent("\(originalName)_backup_\(timestamp)")
+        var suffix = 1
+        while fileManager.fileExists(atPath: backupURL.path) {
+            backupURL = backupsDirectory.appendingPathComponent("\(originalName)_backup_\(timestamp)_\(suffix)")
+            suffix += 1
+        }
 
         // 3. Verify original file exists and is readable
-        guard fileManager.fileExists(atPath: fileURL.path) else {
+        let resolvedSource = fileURL.resolvingSymlinksInPath()
+        guard fileManager.fileExists(atPath: resolvedSource.path) else {
             throw NSError(
                 domain: "PathDeck.BackupManager",
                 code: 404,
@@ -74,7 +88,7 @@ public final class BackupManager {
             )
         }
 
-        guard fileManager.isReadableFile(atPath: fileURL.path) else {
+        guard fileManager.isReadableFile(atPath: resolvedSource.path) else {
             throw NSError(
                 domain: "PathDeck.BackupManager",
                 code: 403,
@@ -82,12 +96,10 @@ public final class BackupManager {
             )
         }
 
-        // 4. Duplicate file
+        // 4. Duplicate file and lock down permissions to owner read/write (0o600)
         do {
-            if fileManager.fileExists(atPath: backupURL.path) {
-                try fileManager.removeItem(at: backupURL)
-            }
-            try fileManager.copyItem(at: fileURL, to: backupURL)
+            try fileManager.copyItem(at: resolvedSource, to: backupURL)
+            try? fileManager.setAttributes([.posixPermissions: 0o600], ofItemAtPath: backupURL.path)
         } catch {
             throw NSError(
                 domain: "PathDeck.BackupManager",
@@ -120,13 +132,11 @@ public final class BackupManager {
             let resourceValues = try url.resourceValues(forKeys: [.fileSizeKey, .creationDateKey])
             let fileSize = Int64(resourceValues.fileSize ?? 0)
 
-            let parts = filename.components(separatedBy: "_backup_")
             var timestamp = resourceValues.creationDate ?? Date()
-            if parts.count > 1 {
-                let tsString = parts[1]
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyyMMdd_HHmmss"
-                if let parsedDate = formatter.date(from: tsString) {
+            if let range = filename.range(of: "_backup_", options: .backwards) {
+                let rawSuffix = String(filename[range.upperBound...])
+                let tsString = rawSuffix.split(separator: "_").prefix(2).joined(separator: "_")
+                if let parsedDate = Self.timestampFormatter.date(from: tsString) {
                     timestamp = parsedDate
                 }
             }
@@ -158,9 +168,11 @@ public final class BackupManager {
             )
         }
 
+        let resolvedTarget = targetURL.resolvingSymlinksInPath()
+
         // 2. Verify target file destination is writable (if it exists)
-        if fileManager.fileExists(atPath: targetURL.path) {
-            guard fileManager.isWritableFile(atPath: targetURL.path) else {
+        if fileManager.fileExists(atPath: resolvedTarget.path) {
+            guard fileManager.isWritableFile(atPath: resolvedTarget.path) else {
                 throw NSError(
                     domain: "PathDeck.BackupManager",
                     code: 403,
@@ -169,18 +181,21 @@ public final class BackupManager {
             }
         }
 
-        // 3. Stage the backup copy beside the target, then swap it in atomically so an
-        //    interrupted restore can never leave a truncated live configuration behind
-        let stagedURL = targetURL.deletingLastPathComponent()
+        // 3. Stage the backup copy beside the resolved target, preserving POSIX permissions
+        let originalPermissions = (try? fileManager.attributesOfItem(atPath: resolvedTarget.path)[.posixPermissions]) as? NSNumber
+        let stagedURL = resolvedTarget.deletingLastPathComponent()
             .appendingPathComponent(".pathdeck_restore_staging_\(UUID().uuidString)")
 
         do {
             try fileManager.copyItem(at: backupURL, to: stagedURL)
+            if let perms = originalPermissions {
+                try? fileManager.setAttributes([.posixPermissions: perms], ofItemAtPath: stagedURL.path)
+            }
 
-            if fileManager.fileExists(atPath: targetURL.path) {
-                _ = try fileManager.replaceItemAt(targetURL, withItemAt: stagedURL, backupItemName: nil, options: [])
+            if fileManager.fileExists(atPath: resolvedTarget.path) {
+                _ = try fileManager.replaceItemAt(resolvedTarget, withItemAt: stagedURL, backupItemName: nil, options: [])
             } else {
-                try fileManager.moveItem(at: stagedURL, to: targetURL)
+                try fileManager.moveItem(at: stagedURL, to: resolvedTarget)
             }
         } catch {
             // Best-effort cleanup of the staged copy before surfacing the failure

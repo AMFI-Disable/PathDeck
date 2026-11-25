@@ -13,8 +13,9 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
 struct PathDeckApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
-    // Instantiate our central state coordinator
+    // Instantiate our central state coordinators
     @State private var service = ShellConfigService()
+    @State private var updater = UpdaterService()
 
     @Environment(\.openWindow) private var openWindow
 
@@ -24,12 +25,12 @@ struct PathDeckApp: App {
     }
 
     var body: some Scene {
-        WindowGroup("PathDeck Studio") {
+        Window("PathDeck Studio", id: "main") {
             MainView()
                 .environment(service)
-                .preferredColorScheme(.dark) // Dark developer studio aesthetic
+                .environment(updater)
+                .preferredColorScheme(.dark)
         }
-        .windowStyle(.hiddenTitleBar)
         .commands {
             // Customize Help menu to trigger manual view window
             CommandGroup(replacing: .help) {

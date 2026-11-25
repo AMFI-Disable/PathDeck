@@ -35,7 +35,7 @@ public struct MainView: View {
         NavigationSplitView {
             SidebarView(service: service, selection: $selection)
                 .frame(minWidth: 220, idealWidth: 260)
-                .background(VisualEffectView(material: .sidebar, blendingMode: .behindWindow))
+                .background(.ultraThinMaterial)
         } detail: {
             Group {
                 switch selection {
@@ -52,7 +52,7 @@ public struct MainView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(VisualEffectView(material: .windowBackground, blendingMode: .behindWindow))
+            .background(.background)
         }
         .frame(minWidth: 800, minHeight: 500)
         .alert("Configuration Error", isPresented: Binding(
@@ -71,13 +71,36 @@ public struct MainView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigation) {
-                HStack(spacing: 8) {
-                    Image(systemName: "terminal.fill")
-                        .foregroundColor(.secondary)
-                    Text(displayPath)
-                        .font(.system(.subheadline, design: .monospaced))
-                        .foregroundColor(.secondary)
+                Menu {
+                    ForEach(service.availableProfiles()) { profile in
+                        Button {
+                            Task { try? await service.loadConfig(from: profile.url) }
+                        } label: {
+                            HStack {
+                                Text(profile.displayPath)
+                                if profile.url == service.activeFileURL {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "terminal.fill")
+                            .foregroundStyle(.secondary)
+                        Text(service.activeProfileDisplayPath)
+                            .font(.system(.subheadline, design: .monospaced))
+                            .foregroundStyle(.secondary)
+                        if service.hasUnsavedChanges {
+                            Circle()
+                                .fill(Color.orange)
+                                .frame(width: 7, height: 7)
+                                .help("Unsaved changes")
+                        }
+                    }
                 }
+                .menuStyle(.borderlessButton)
+                .help("Switch active shell configuration profile")
             }
 
             ToolbarItem(placement: .primaryAction) {
@@ -87,8 +110,9 @@ public struct MainView: View {
                         Label("Revert", systemImage: "arrow.counterclockwise.circle")
                     }
                     .buttonStyle(.bordered)
+                    .keyboardShortcut("r", modifiers: .command)
                     .disabled(isSaving)
-                    .help("Discard unsaved UI changes and reload last state from disk")
+                    .help("Discard unsaved UI changes and reload last state from disk (Cmd+R)")
 
                     // Save Changes Button
                     Button(action: saveChanges) {
@@ -101,16 +125,17 @@ public struct MainView: View {
                         } else if saveSuccess {
                             HStack(spacing: 6) {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                 Text("Saved")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                             }
                         } else {
                             Label("Save Changes", systemImage: "square.and.arrow.down")
                         }
                     }
+                    .keyboardShortcut("s", modifiers: .command)
                     .disabled(isSaving)
-                    .help("Save all workspace configurations to disk")
+                    .help("Save all workspace configurations to disk (Cmd+S)")
                 }
             }
         }
