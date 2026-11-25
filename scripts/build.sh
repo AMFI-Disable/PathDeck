@@ -15,28 +15,6 @@ if [ -z "$DEVELOPER_DIR" ] && [ -d "/Applications/Xcode-beta.app/Contents/Develo
     export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer"
 fi
 
-# 1. Check and compile logo.png into appicon.icns if present
-if [ -f "$WORKSPACE_DIR/logo.png" ]; then
-    echo "0. Found logo.png - generating macOS appicon.icns..."
-    rm -rf "$WORKSPACE_DIR/pathdeck.iconset"
-    mkdir -p "$WORKSPACE_DIR/pathdeck.iconset"
-    
-    sips -z 16 16   "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_16x16.png" >/dev/null 2>&1
-    sips -z 32 32   "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_16x16@2x.png" >/dev/null 2>&1
-    sips -z 32 32   "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_32x32.png" >/dev/null 2>&1
-    sips -z 64 64   "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_32x32@2x.png" >/dev/null 2>&1
-    sips -z 128 128 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_128x128.png" >/dev/null 2>&1
-    sips -z 256 256 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_128x128@2x.png" >/dev/null 2>&1
-    sips -z 256 256 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_256x256.png" >/dev/null 2>&1
-    sips -z 512 512 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_256x256@2x.png" >/dev/null 2>&1
-    sips -z 512 512 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_512x512.png" >/dev/null 2>&1
-    sips -z 1024 1024 "$WORKSPACE_DIR/logo.png" --out "$WORKSPACE_DIR/pathdeck.iconset/icon_512x512@2x.png" >/dev/null 2>&1
-    
-    iconutil -c icns "$WORKSPACE_DIR/pathdeck.iconset" -o "$WORKSPACE_DIR/appicon.icns"
-    rm -rf "$WORKSPACE_DIR/pathdeck.iconset"
-    echo "appicon.icns generated successfully."
-fi
-
 echo "1. Building Swift Package executable in Release mode..."
 swift build -c release
 
@@ -51,14 +29,18 @@ cp "$BUILD_DIR/release/PathDeck" "$OUTPUT_APP_DIR/Contents/MacOS/PathDeck"
 echo "4. Copying info.plist..."
 cp "$SCRIPTS_DIR/info.plist" "$OUTPUT_APP_DIR/Contents/Info.plist"
 
-# Copy prebuilt or generated appicon.icns into app bundle resources
-if [ -f "$WORKSPACE_DIR/sources/pathdeck/resources/appicon.icns" ]; then
-    echo "Copying sources/pathdeck/resources/appicon.icns into Resources folder..."
-    cp "$WORKSPACE_DIR/sources/pathdeck/resources/appicon.icns" "$OUTPUT_APP_DIR/Contents/Resources/appicon.icns"
-elif [ -f "$WORKSPACE_DIR/appicon.icns" ]; then
-    echo "Copying appicon.icns into Resources folder..."
-    cp "$WORKSPACE_DIR/appicon.icns" "$OUTPUT_APP_DIR/Contents/Resources/appicon.icns"
-fi
+# iconutil consumes a .iconset directory with Apple's size and scale filenames.
+ICON_SOURCE="$WORKSPACE_DIR/sources/pathdeck/resources/assets.xcassets/appicon.appiconset"
+ICON_TEMP=$(mktemp -d)
+trap 'rm -rf "$ICON_TEMP"' EXIT
+ICON_SET="$ICON_TEMP/appicon.iconset"
+mkdir "$ICON_SET"
+for size in 16 32 128 256 512; do
+    for scale in "" "@2x"; do
+        cp "$ICON_SOURCE/icon_${size}x${size}${scale}.png" "$ICON_SET/"
+    done
+done
+iconutil -c icns "$ICON_SET" -o "$OUTPUT_APP_DIR/Contents/Resources/appicon.icns"
 
 echo "5. Performing ad-hoc codesigning on PathDeck.app..."
 codesign --force --deep --sign - "$OUTPUT_APP_DIR"

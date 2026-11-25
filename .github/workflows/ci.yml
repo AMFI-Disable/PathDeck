@@ -95,6 +95,12 @@ jobs:
         chmod +x ./scripts/build.sh
         ./scripts/build.sh
 
+    - name: Verify Packaged Application Icon
+      run: |
+        icon_name=$(plutil -extract CFBundleIconFile raw PathDeck.app/Contents/Info.plist)
+        iconutil -c iconset "PathDeck.app/Contents/Resources/$icon_name" -o "$RUNNER_TEMP/packaged.iconset"
+        test -s "$RUNNER_TEMP/packaged.iconset/icon_512x512@2x.png"
+
     - name: Automatically Create Release and Upload DMG
       if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v3

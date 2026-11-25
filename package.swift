@@ -15,7 +15,7 @@ let package = Package(
             name: "PathDeck",
             dependencies: [],
             path: "sources/pathdeck",
-            exclude: ["resources/appicon.icns"]
+            exclude: ["resources"]
         ),
         .testTarget(
             name: "PathDeckTests",
