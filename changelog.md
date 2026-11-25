@@ -6,12 +6,18 @@ All notable changes, features, and release history for PathDeck Studio are docum
 
 ## [Unreleased]
 
+### Added
+
+- Synced Retina `appicon.appiconset` icon assets, excluded `appicon.icns` from SwiftPM target sources in `package.swift`, and added `tests/pathdecktests/modernizationtests.swift`.
+
 ### Fixed
 
 - Package the app icon from the tracked Retina assets so fresh release builds include it.
+- Whitelisted `pathdeck.xcodeproj/` in `.gitignore` and aligned `scripts/build.sh` and `scripts/info.plist` icon references to lowercase `appicon.icns`.
 
 ### Changed
 
+- Modernized core studio models, shell config parser (`disabledPathExport`, `ShellProfile`), services, and views.
 - Restored the Star History chart section and links in `readme.md` and `website/src/main.ts`.
 - Restored active project maintenance status and badges in `readme.md`, removing repository archival and sunset notices.
 - Reinstated active security policy guidelines and private vulnerability reporting workflows in `security.md`.
