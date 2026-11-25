@@ -45,6 +45,7 @@ Icon?
 # ------------------------------------------------------------------------------
 # 2.2 Xcode Generated Projects, Workspaces & User State
 # ------------------------------------------------------------------------------
+!pathdeck.xcodeproj/
 *.xcodeproj/
 *.xcodeproj
 *.xcworkspace/
