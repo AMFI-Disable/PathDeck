@@ -21,9 +21,9 @@
     <key>NSHumanReadableCopyright</key>
     <string>Copyright (c) 2026 AMFI-Disable. Licensed under MIT.</string>
     <key>CFBundleIconName</key>
-    <string>AppIcon</string>
+    <string>appicon</string>
     <key>CFBundleIconFile</key>
-    <string>AppIcon</string>
+    <string>appicon.icns</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>NSFaceIDUsageDescription</key>

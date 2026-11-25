@@ -51,10 +51,13 @@ cp "$BUILD_DIR/release/PathDeck" "$OUTPUT_APP_DIR/Contents/MacOS/PathDeck"
 echo "4. Copying info.plist..."
 cp "$SCRIPTS_DIR/info.plist" "$OUTPUT_APP_DIR/Contents/Info.plist"
 
-# Copy generated appicon.icns into app bundle resources if it exists
-if [ -f "$WORKSPACE_DIR/appicon.icns" ]; then
+# Copy prebuilt or generated appicon.icns into app bundle resources
+if [ -f "$WORKSPACE_DIR/sources/pathdeck/resources/appicon.icns" ]; then
+    echo "Copying sources/pathdeck/resources/appicon.icns into Resources folder..."
+    cp "$WORKSPACE_DIR/sources/pathdeck/resources/appicon.icns" "$OUTPUT_APP_DIR/Contents/Resources/appicon.icns"
+elif [ -f "$WORKSPACE_DIR/appicon.icns" ]; then
     echo "Copying appicon.icns into Resources folder..."
-    cp "$WORKSPACE_DIR/appicon.icns" "$OUTPUT_APP_DIR/Contents/Resources/AppIcon.icns"
+    cp "$WORKSPACE_DIR/appicon.icns" "$OUTPUT_APP_DIR/Contents/Resources/appicon.icns"
 fi
 
 echo "5. Performing ad-hoc codesigning on PathDeck.app..."
