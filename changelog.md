@@ -6,6 +6,10 @@ All notable changes, features, and release history for PathDeck Studio are docum
 
 ## [Unreleased]
 
+### Documentation
+
+- Paired the English and Simplified Chinese setup and contribution guides and added bilingual prompts to bug reports, feature requests and pull requests.
+
 ### Added
 
 - Synced Retina `appicon.appiconset` icon assets, excluded `appicon.icns` from SwiftPM target sources in `package.swift`, and added `tests/pathdecktests/modernizationtests.swift`.

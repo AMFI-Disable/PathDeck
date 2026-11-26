@@ -15,7 +15,7 @@
 [![Pricing: Free & Open-Source](https://img.shields.io/badge/Pricing-100%25%20Free%20%26%20Open%20Source-success.svg?style=flat-square)](#overview-and-core-value)
 [![Privacy: Zero Telemetry](https://img.shields.io/badge/Privacy-Zero%20Telemetry%20%2F%20100%25%20Local-purple.svg?style=flat-square)](#privacy-and-security-first)
 
-[Changelog](changelog.md) · [Security Policy](security.md) · [MIT License](license)
+[中文文档](readme.zh-cn.md) · [Changelog](changelog.md) · [Security Policy](security.md) · [MIT License](license)
 
 </div>
 
@@ -35,7 +35,7 @@
 
 ## Overview And Core Value <a id="overview-and-core-value"></a>
 
-> **Project status — final standalone release.** V1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
+> **Project status — final standalone release.** v1.0.1 is the last independently shipped version of PathDeck Studio; the project is moving into a parent application for integration. See the [changelog](changelog.md) for the farewell release notes.
 
 PathDeck is a premium, native macOS developer studio designed to visually manage, prioritize, audit, and safely back up shell environment configurations (specifically targeting `~/.zshrc` and `~/.bash_profile`).
 
@@ -57,10 +57,10 @@ Every developer on a Mac deals with shell profiles, but managing them remains tr
 
 ### Manual DMG Package (GitHub Releases)
 
-Download the verified `.dmg` package from [GitHub Releases](https://github.com/AMFI-Disable/PathDeck/releases). Verify the SHA-256 checksum after download:
+Download the verified `.dmg` package from [GitHub Releases](https://github.com/AMFI-Disable/PathDeck/releases). Compare its SHA-256 with the digest published for `PathDeck.dmg` on the [v1.0.1 release](https://github.com/AMFI-Disable/PathDeck/releases/tag/v1.0.1):
 
 ```bash
-shasum -a 256 pathdeck-1.0.1.dmg
+shasum -a 256 PathDeck.dmg
 ```
 
 #### macOS Gatekeeper Clearance (Unnotarized Open-Source Build)
